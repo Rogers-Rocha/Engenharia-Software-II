@@ -1,25 +1,25 @@
 from abc import ABC, abstractmethod
 
-class IRepoALuno(ABC):
+class IALunoBackup(ABC):
 
     @abstractmethod
     def salvar(self, aluno):
         pass
 
-class AlunoRepo(IRepoALuno):
+class AlunoRepo(IALunoBackup):
     def salvar(self, aluno):
-        print(f"\nSalvando o aluno {aluno.nome} no banco de dados\n")
+        print(f"\nSalvando o aluno {aluno.nome} no repositorio\n")
 
 class Aluno:
     def __init__(self, nome):
         self.nome = nome
 
 class Professor:
-    def __init__(self, repo):
-        self.repo = repo
+    def __init__(self, aluno_backup):
+        self.aluno_backup = aluno_backup
 
     def salvar_aluno(self, aluno):
-        self.repo.salvar(aluno)
+        self.aluno_backup.salvar(aluno)
 
 if __name__ == "__main__":
     aluno = Aluno("Joana")

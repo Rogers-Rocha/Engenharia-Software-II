@@ -5,7 +5,7 @@ class Aluno:
 
 class AlunoRepo:
     def salvar(self, aluno):
-        print(f"\nSalvando aluno {aluno.nome} no banco de dados\n")
+        print(f"\nSalvando aluno {aluno.nome} no repositorio\n")
 
 class Professor:
     def salvar_aluno(self, aluno):
