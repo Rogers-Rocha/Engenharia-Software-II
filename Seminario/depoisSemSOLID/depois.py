@@ -24,7 +24,7 @@ class Professor:
 if __name__ == "__main__":
     aluno = Aluno("Joana")
 
-    repo = AlunoRepo() # criação de dependencia
-    prof = Professor(repo) # injeção
+    repositorio = AlunoRepo() # criação de dependencia
+    prof = Professor(repositorio) # injeção
 
     prof.salvar_aluno(aluno)

@@ -9,8 +9,8 @@ class AlunoRepo:
 
 class Professor:
     def salvar_aluno(self, aluno):
-        repo = AlunoRepo()
-        repo.salvar(aluno)
+        repositorio = AlunoRepo()
+        repositorio.salvar(aluno)
 
 if __name__ == "__main__":
     aluno = Aluno("Joao")
