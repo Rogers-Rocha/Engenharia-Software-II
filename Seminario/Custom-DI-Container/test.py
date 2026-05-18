@@ -13,7 +13,7 @@ class IAlunoBackup(ABC):
 
 class AlunoRepo(IAlunoBackup):
     def salvar(self, aluno):
-        print(f"\nSalvando o aluno {aluno.nome} no banco de dados\n") 
+        print(f"\nSalvando o aluno {aluno.nome} no repositorio\n") 
 
 class Professor:
     def __init__(self, aluno_backup):
