@@ -9,7 +9,7 @@ function Menu({ isOpen, toggleMenu, options }) {
           style={{ maxWidth: "480px" }} /* Limita tamanho do menu */
         >
           {/* Cabeçalho do Menu */}
-          <div className="menu-header">
+          <div className="menu-header" style={{ fontSize: "18px" }}>
             <div className="menu-title" style={{ fontWeight: "bold" }}>
               Menu Principal
             </div>
@@ -18,12 +18,12 @@ function Menu({ isOpen, toggleMenu, options }) {
               type="button"
               onClick={toggleMenu}
             >
-              <i className="fas fa-times" />
+              <i className="fas fa-times" style={{ fontSize: "22px" }} />
             </button>
           </div>
 
           {/* Corpo/Navegação do Menu */}
-          <nav className="menu-body">{options}</nav>
+          {options}
         </div>
 
         {/* Scrim (fundo escurecido) que fecha o menu ao clicar fora*/}

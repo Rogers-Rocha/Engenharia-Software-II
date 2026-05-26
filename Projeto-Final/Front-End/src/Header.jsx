@@ -7,6 +7,7 @@ function Header({ goToHome, openMenu, fazerPesquisa }) {
   const handlePesquisa = () => {
     if (inputPesquisa.trim() === "") return; // Não faça nada se a pesquisa for vazia
     fazerPesquisa(inputPesquisa);
+    setInputPesquisa("");
   };
 
   return (
@@ -17,13 +18,13 @@ function Header({ goToHome, openMenu, fazerPesquisa }) {
           style={{ display: "flex", alignItems: "center" }} // Mantém todos os itens do header alinhados
         >
           {/* Botão do Menu*/}
-          <div className="header-menu-trigger" style={{ marginRight: "16px" }}>
+          <div className="header-menu-trigger" style={{ marginRight: "24px" }}>
             <button
               className="br-button circle small"
               type="button"
               onClick={openMenu}
             >
-              <i className="fas fa-bars" />
+              <i className="fas fa-bars" style={{ fontSize: "24px" }} />
             </button>
           </div>
 
@@ -35,7 +36,7 @@ function Header({ goToHome, openMenu, fazerPesquisa }) {
               onClick={goToHome}
               style={{ cursor: "pointer" }}
             />
-            <span className="br-divider vertical"></span>
+            <span className="br-divider vertical md"></span>
             <div
               className="header-title"
               onClick={goToHome}
