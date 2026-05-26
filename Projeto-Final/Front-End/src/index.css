@@ -1,3 +1,4 @@
-/* Importação dos estilos bases de govBR-DS */
-@import "@govbr-ds/core/dist/core-tokens.min.css";
+/* Importação requirida por govBR-DS */
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+/* Importação dos estilos bases do govBR-DS */
 @import "@govbr-ds/core/dist/core.min.css";

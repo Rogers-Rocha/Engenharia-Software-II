@@ -1,28 +1,44 @@
+import { useState } from "react";
+import Header from "./Header.jsx";
+import Menu from "./Menu.jsx";
 import "./App.css";
-import { BrHeader, BrButton, BrIcon } from "@govbr-ds/webcomponents-react";
 
 function App() {
+  const [menuIsOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen(!menuIsOpen);
+
+  const menuOptions = [
+    {
+      name: "Home",
+      handler: toggleMenu,
+    },
+    {
+      name: "<Outra Opção>",
+      handler: toggleMenu,
+    },
+  ];
+
+  const tempHome = () => alert("Abrindo Home...");
+
+  const tempPesquisa = (inputPesquisa) =>
+    alert(`Pesquisando ${inputPesquisa}...`);
+
   return (
-    <header className="br-header">
-      <div className="container-lg">
-        <div className="header-top">
-          <div className="header-logo">
-            <img
-              src="https://www.gov.br/ds/assets/img/govbr-logo-large.png"
-              alt="Logo"
-            />
-            <span className="br-divider vertical mx-1"></span>
-            <div className="header-sign">Órgão Responsável</div>
-          </div>
-          <div className="header-actions">
-            <BrButton primary onBrClick={() => console.log("Login")}>
-              <BrIcon icon="user" />
-              <span className="ml-1">Entrar</span>
-            </BrButton>
-          </div>
-        </div>
-      </div>
-    </header>
+    <>
+      <Header
+        goToHome={tempHome}
+        openMenu={toggleMenu}
+        fazerPesquisa={tempPesquisa}
+      />
+
+      <Menu isOpen={menuIsOpen} toggleMenu={toggleMenu} />
+
+      <main className="container-lg" style={{ textAlign: "right" }}>
+        <h2>Bem-vindo ao Site S.I.</h2>
+        <p>A navegação do seu site agora está modularizada!</p>
+      </main>
+    </>
   );
 }
 
