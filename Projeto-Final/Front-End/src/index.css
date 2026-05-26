@@ -1,0 +1,3 @@
+/* Importação dos estilos bases de govBR-DS */
+@import "@govbr-ds/core/dist/core-tokens.min.css";
+@import "@govbr-ds/core/dist/core.min.css";
