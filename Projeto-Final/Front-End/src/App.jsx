@@ -8,17 +8,6 @@ function App() {
 
   const toggleMenu = () => setMenuOpen(!menuIsOpen);
 
-  const menuOptions = [
-    {
-      name: "Home",
-      handler: toggleMenu,
-    },
-    {
-      name: "<Outra Opção>",
-      handler: toggleMenu,
-    },
-  ];
-
   const tempHome = () => alert("Abrindo Home...");
 
   const tempPesquisa = (inputPesquisa) =>
@@ -32,9 +21,9 @@ function App() {
         fazerPesquisa={tempPesquisa}
       />
 
-      <Menu isOpen={menuIsOpen} toggleMenu={toggleMenu} />
+      <Menu isOpen={menuIsOpen} toggleMenu={toggleMenu} options={<></>} />
 
-      <main className="container-lg" style={{ textAlign: "right" }}>
+      <main className="container-lg">
         <h2>Bem-vindo ao Site S.I.</h2>
         <p>A navegação do seu site agora está modularizada!</p>
       </main>

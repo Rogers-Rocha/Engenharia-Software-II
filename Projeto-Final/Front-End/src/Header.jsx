@@ -38,9 +38,12 @@ function Header({ goToHome, openMenu, fazerPesquisa }) {
             <span className="br-divider vertical"></span>
             <div
               className="header-title"
-              style={{ fontSize: "18px" }}
               onClick={goToHome}
-              style={{ cursor: "pointer" }}
+              style={{
+                cursor: "pointer",
+                fontSize: "18px",
+                fontWeight: "bold",
+              }}
             >
               Site S.I.
             </div>
