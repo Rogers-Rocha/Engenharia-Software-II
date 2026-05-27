@@ -1,4 +1,3 @@
-/* Importação requirida por govBR-DS */
-@import "@fortawesome/fontawesome-free/css/all.min.css";
-/* Importação dos estilos bases do govBR-DS */
-@import "@govbr-ds/core/dist/core.min.css";
+/* External imports moved to src/main.jsx to avoid postcss import resolution issues */
+
+/* Add project-specific styles below */
