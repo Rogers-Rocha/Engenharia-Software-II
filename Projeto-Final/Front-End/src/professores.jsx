@@ -3,11 +3,11 @@ import { useState } from 'react'
 import "./App.css";
 import "./Componentes/professor.css";
 
-import Todo from "./Componentes/Todo.jsx";
+import Item from "./Componentes/itemProf.jsx";
 import semfoto from "./Componentes/imagens/semfoto.jpg";
 
 function Professores() {
-  const [todos] = useState([
+  const [items] = useState([
     {
       id: 1,
       foto: semfoto,
@@ -99,10 +99,10 @@ function Professores() {
   <div className="professores">
     <h1>Lista de professores</h1>
 
-    <div className="todo-lista">
-      {todos.map((todo) => (
-        // No componente Twodu, a propriedade (ou objeto) Twodu tem o valor twodu
-        <Todo todo={todo} />
+    <div className="item-lista">
+      {items.map((item) => (
+        // No componente Item, a propriedade (ou objeto) item tem o valor item
+        <Item item={item} />
       ))}
     </div>
   </div>

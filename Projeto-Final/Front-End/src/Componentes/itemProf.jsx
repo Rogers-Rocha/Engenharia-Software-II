@@ -1,20 +1,20 @@
 import { useState } from "react";
-import "./Professor.css";
+import "./professor.css";
 
-const Todo = ({ todo }) => {
+const Item = ({ item }) => {
   const [secaoAtiva, setSecaoAtiva] = useState(null);
   const [detalhesAberto, setDetalhesAberto] = useState(null);
 
   return (
-    <div className="todo">
+    <div className="item">
       <img
-        src={todo.foto}
-        alt={todo.prof}
+        src={item.foto}
+        alt={item.prof}
         className="foto-professor"
       />
 
       <div className="conteudo">
-        <p>{todo.prof}</p>
+        <p>{item.prof}</p>
 
         {/* BOTÃO DISCIPLINAS */}
         <button
@@ -31,9 +31,9 @@ const Todo = ({ todo }) => {
         </button>
 
         {secaoAtiva === "disciplinas" &&
-          todo.disciplinas?.length > 0 && (
+          item.disciplinas?.length > 0 && (
             <ul className="lista-disciplinas">
-              {todo.disciplinas.map((disc, index) => (
+              {item.disciplinas.map((disc, index) => (
                 <li key={index}>
                   {disc.nome} ({disc.periodo})
                 </li>
@@ -56,9 +56,9 @@ const Todo = ({ todo }) => {
         </button>
 
         {secaoAtiva === "projetos" &&
-          todo.projetos?.length > 0 && (
+          item.projetos?.length > 0 && (
             <ul className="lista-projetos">
-              {todo.projetos.map((proj) => (
+              {item.projetos.map((proj) => (
                 <li key={proj.nome}>
                   <p>{proj.nome}</p>
 
@@ -92,4 +92,4 @@ const Todo = ({ todo }) => {
   );
 };
 
-export default Todo;
+export default Item;

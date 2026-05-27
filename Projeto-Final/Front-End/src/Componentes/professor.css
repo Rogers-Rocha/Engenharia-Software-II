@@ -1,11 +1,11 @@
-.todo-lista {
+.item-lista {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
 }
 
 /* CARD */
-.todo {
+.item {
   width: 300px;
   min-height: 350px; 
   padding: 10px;
@@ -22,7 +22,7 @@
   transition: 0.2s;
 }
 
-.todo:hover {
+.item:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 

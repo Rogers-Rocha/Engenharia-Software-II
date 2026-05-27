@@ -4,7 +4,8 @@ import Menu from "./Menu.jsx";
 import Home from "./Home.jsx";
 import Socials from "./Socials.jsx";
 import options from "./options.json";
-import Professores from './professores.jsx'
+import Professores from './professores.jsx';
+import Coordenacao from "./coordenacao.jsx";
 import { addHandlers, objToOpt } from "./options.jsx";
 import "./App.css";
 
@@ -34,6 +35,7 @@ function App() {
   defaultHandler.home = changePage(<Home />);
   defaultHandler.socials = changePage(<Socials />);
   defaultHandler.profs = changePage(<Professores />);
+  defaultHandler.coord = changePage(<Coordenacao />);
 
   addHandlers(options, defaultHandler);
 
