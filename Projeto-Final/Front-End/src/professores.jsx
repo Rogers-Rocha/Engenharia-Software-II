@@ -93,6 +93,34 @@ function Professores() {
       descricao: "Estudo sobre uso de inteligência artificial no apoio ao ensino superior, analisando desempenho acadêmico e personalização do aprendizado."}
       ],
     },
+    {
+      id: 7,
+      foto: semfoto,
+      prof: "Frank Cézar Hipólito Luz",
+      disciplinas: [
+        {nome: "Circuitos", periodo: "2º Período"},
+        {nome: "Arquitetura", periodo: "3º Período"}
+      ],
+      projetos: [
+        {
+      nome: "IA aplicada à educação",
+      descricao: "Estudo sobre uso de inteligência artificial no apoio ao ensino superior, analisando desempenho acadêmico e personalização do aprendizado."}
+      ],
+    },
+    {
+      id: 8,
+      foto: semfoto,
+      prof: "Rayner Sousa Carvalho",
+      disciplinas: [
+        {nome: "Redes de Computadores I", periodo: "4º Período"},
+        {nome: "Redes de Computadores II", periodo: "5º Período"}
+      ],
+      projetos: [
+        {
+      nome: "IA aplicada à educação",
+      descricao: "Estudo sobre uso de inteligência artificial no apoio ao ensino superior, analisando desempenho acadêmico e personalização do aprendizado."}
+      ],
+    },
   ]);
 
   return (
