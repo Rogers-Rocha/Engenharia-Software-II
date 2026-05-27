@@ -1,12 +1,14 @@
-.item-lista {
+.item-lista { 
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  width: 100%; /* ocupa toda a largura */
 }
 
 /* CARD */
 .item {
-  width: 300px;
+  flex: 1 1 300px;   /* 🔥 faz os cards se ajustarem automaticamente */
+  max-width: 100%;
   min-height: 350px; 
   padding: 10px;
   border: 1px solid #ccc;
@@ -46,15 +48,24 @@
 /* BOTÕES */
 button {
   background: none;
-  border: none;
   cursor: pointer;
   font-weight: bold;
-  margin-top: 8px;
 }
 
 /* DISCIPLINAS */
 .btn-disciplinas {
   color: blue;
+  border: 1px solid blue;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: transparent;
+  transition: 0.2s;
+  margin-top: 8px;
+}
+
+.btn-disciplinas:hover {
+  background: blue;
+  color: white;
 }
 
 .btn-disciplinas.ativo {
@@ -64,6 +75,17 @@ button {
 /* PROJETOS */
 .btn-projetos {
   color: green;
+  border: 1px solid green;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: transparent;
+  transition: 0.2s;
+  margin-top: 8px;
+}
+
+.btn-projetos:hover {
+  background: green;
+  color: white;
 }
 
 .btn-projetos.ativo {
@@ -79,29 +101,31 @@ button {
   width: 100%;
 }
 
-/* ITENS */
 .lista-disciplinas li,
 .lista-projetos li {
+  list-style: none;
   font-size: 14px;
   margin-bottom: 6px;
 }
 
+/* BOTÃO DETALHES */
 .btn-detalhes {
-  margin-top: 4px;
+  margin-top: 6px;
   padding: 4px 8px;
 
-  color: #007bff;              /* texto azul */
-  border: 1px solid #007bff;  /* borda azul */
+  color: #007bff;
+  border: 1px solid #007bff;
   background: transparent;
 
   border-radius: 6px;
   font-size: 12px;
+
+  display: inline-block;
   cursor: pointer;
 
   transition: 0.2s;
 }
 
-/* efeito ao passar o mouse */
 .btn-detalhes:hover {
   background: #007bff;
   color: white;
