@@ -4,6 +4,7 @@ import Menu from "./Menu.jsx";
 import Home from "./Home.jsx";
 import Socials from "./Socials.jsx";
 import options from "./options.json";
+import Professores from './professores.jsx'
 import { addHandlers, objToOpt } from "./options.jsx";
 import "./App.css";
 
@@ -32,6 +33,7 @@ function App() {
   // Para as demais, usa o defaultHandler (a própria função)
   defaultHandler.home = changePage(<Home />);
   defaultHandler.socials = changePage(<Socials />);
+  defaultHandler.Professores = chancePage(<Professores />);
 
   addHandlers(options, defaultHandler);
 
