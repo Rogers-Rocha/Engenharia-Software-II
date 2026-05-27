@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import "./App.css";
-import "./Professor.css";
+import "./Componentes/professor.css";
 
 import Todo from "./Componentes/Todo.jsx";
 import semfoto from "./Componentes/imagens/semfoto.jpg";

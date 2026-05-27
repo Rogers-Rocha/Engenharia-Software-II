@@ -33,7 +33,7 @@ function App() {
   // Para as demais, usa o defaultHandler (a própria função)
   defaultHandler.home = changePage(<Home />);
   defaultHandler.socials = changePage(<Socials />);
-  defaultHandler.Professores = chancePage(<Professores />);
+  defaultHandler.profs = changePage(<Professores />);
 
   addHandlers(options, defaultHandler);
 
