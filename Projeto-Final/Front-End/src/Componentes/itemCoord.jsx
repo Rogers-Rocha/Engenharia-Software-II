@@ -4,6 +4,10 @@ import "./coordenacao.css";
 const Item = ({ item }) => {
   const [mostrarContato, setMostrarContato] = useState(false);
 
+  const toggleContato = () => {
+    setMostrarContato((prev) => !prev);
+  };
+
   return (
     <div className="item">
       <img
@@ -15,15 +19,14 @@ const Item = ({ item }) => {
       <div className="conteudo">
         <p className="nome">{item.prof}</p>
 
-        {/* Corrigido: trab (minúsculo, igual ao objeto) */}
         {item.trab && <p className="cargo">{item.trab}</p>}
 
         {/* BOTÃO CONTATO */}
         <button
           className={`btn-contato ${mostrarContato ? "ativo" : ""}`}
-          onClick={() => setMostrarContato(!mostrarContato)}
+          onClick={toggleContato}
         >
-          Contato
+          {mostrarContato ? "Ocultar contato" : "Contato"}
         </button>
 
         {/* LISTA DE CONTATOS */}

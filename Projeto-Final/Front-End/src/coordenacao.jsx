@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import "./App.css";
 import "./Componentes/coordenacao.css";
 
@@ -7,15 +5,15 @@ import Item from "./Componentes/itemCoord.jsx";
 import semfoto from "./Componentes/imagens/semfoto.jpg";
 
 function Coordenacao() {
-  const [items] = useState([
+  const items = [
     {
       id: 1,
       foto: semfoto,
       prof: "Frank Cézar Hipólito Luz",
       trab: "Coordenador",
       contato: [
-        {nome: "frankcezar@gmail.com", tipo: ""},
-      ]
+        { nome: "frankcezar@gmail.com", tipo: "" },
+      ],
     },
     {
       id: 2,
@@ -23,23 +21,22 @@ function Coordenacao() {
       prof: "Rayner Sousa Carvalho",
       trab: "Sub-Coordenador",
       contato: [
-        {nome: "raynersousa@gmail.com", tipo: ""},
-      ]
+        { nome: "raynersousa@gmail.com", tipo: "" },
+      ],
     },
-  ]);
+  ];
 
   return (
-  <div className="coordenacao">
-    <h1>Coordenação</h1>
+    <div className="coordenacao">
+      <h1>Coordenação</h1>
 
-    <div className="item-lista">
-      {items.map((item) => (
-        // No componente Twodu, a propriedade (ou objeto) Twodu tem o valor twodu
-        <Item item={item} />
-      ))}
+      <div className="item-lista">
+        {items.map((item) => (
+          <Item key={item.id} item={item} />
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
-export default Coordenacao
+export default Coordenacao;
