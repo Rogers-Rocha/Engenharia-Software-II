@@ -73,3 +73,17 @@
   font-size: 0.9rem;
   color: #555;
 }
+
+/* Tira a formatação padrão de link do card e garante o cursor de clique */
+a.br-card.clickable-card {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex; /* Mantém o comportamento de card flexível que criamos antes */
+}
+
+/* Evita que o link fique com contorno estranho ao clicar, mas o mantém para navegação por teclado */
+a.br-card.clickable-card:focus-visible {
+  outline: 3px solid #1351b4; /* Cor padrão de foco do govbr-ds */
+  outline-offset: 2px;
+}

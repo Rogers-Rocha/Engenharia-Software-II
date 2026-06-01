@@ -11,12 +11,14 @@ const catalogo = [
         titulo: "Sistemas de Banco de Dados",
         autor: "Ramez Elmasri & Shamkant B. Navathe",
         imagem: "https://placehold.co/200x300/e0e0e0/333333?text=BD+Elmasri",
+        link: "https://www.amazon.com.br/dp/8543004838",
       },
       {
         id: 2,
         titulo: "SQL Básico",
         autor: "Ben Forta",
         imagem: "https://placehold.co/200x300/e0e0e0/333333?text=SQL+Basico",
+        link: "https://www.amazon.com.br/dp/8543004838",
       },
     ],
   },
@@ -29,6 +31,7 @@ const catalogo = [
         autor: "Luciano Ramalho",
         imagem:
           "https://placehold.co/200x300/e0e0e0/333333?text=Python+Fluente",
+        link: "https://www.amazon.com.br/dp/8543004838",
       },
       {
         id: 4,
@@ -36,6 +39,7 @@ const catalogo = [
         autor: "Eric Matthes",
         imagem:
           "https://placehold.co/200x300/e0e0e0/333333?text=Python+Simplificado",
+        link: "https://www.amazon.com.br/dp/8543004838",
       },
       {
         id: 5,
@@ -43,6 +47,7 @@ const catalogo = [
         autor: "Al Sweigart",
         imagem:
           "https://placehold.co/200x300/e0e0e0/333333?text=Automatize+Python",
+        link: "https://www.amazon.com.br/dp/8543004838", // Link mockado
       },
     ],
   },
@@ -66,7 +71,12 @@ function Livros() {
           {/* Grid contendo os livros daquela categoria específica */}
           <div className="livros-grid">
             {secao.livros.map((livro) => (
-              <div key={livro.id} className="br-card hover">
+              <a
+                key={livro.id}
+                href={livro.link}
+                target="_blank"
+                className="br-card hover clickable-card"
+              >
                 <div className="card-image">
                   <img
                     src={livro.imagem}
@@ -77,7 +87,7 @@ function Livros() {
                   <h4 className="livro-titulo">{livro.titulo}</h4>
                   <span className="livro-autor">{livro.autor}</span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </section>
