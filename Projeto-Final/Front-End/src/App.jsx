@@ -10,6 +10,7 @@ import Socials from "./socials.jsx";
 import Professores from "./professores.jsx";
 import Coordenacao from "./coordenacao.jsx";
 import Livros from "./livros.jsx";
+import Sites from "./sites.jsx";
 
 import "./App.css";
 
@@ -17,19 +18,34 @@ function App() {
   const [menuIsOpen, setMenuOpen] = useState(false);
   const [pagina, setPagina] = useState(<Home />);
 
-  const toggleMenu = () => setMenuOpen(!menuIsOpen);
+  const toggleMenu = () => {
+    // Fecha os folders abertos do menu quando o menu for fechado
+    if (menuIsOpen) {
+      const pastasAbertas = document.querySelectorAll(".menu-folder.active");
+      pastasAbertas.forEach((pasta) => {
+        pasta.classList.remove("active");
+
+        const subMenu = pasta.querySelector("ul");
+        if (subMenu) subMenu.style.display = "none";
+
+        const icone = pasta.querySelector(".support i");
+        if (icone) icone.className = "fas fa-angle-down";
+      });
+    }
+    setMenuOpen(!menuIsOpen);
+  };
 
   // Factory que retorna um handler que troca a página e fecha o menu
   const changePage = (component) => (e) => {
     e.preventDefault();
     setPagina(component);
-    setMenuOpen(false);
+    toggleMenu();
   };
 
   // Handler padrão — apenas fecha o menu sem mudar de página
   function defaultHandler(e) {
     e.preventDefault();
-    setMenuOpen(false);
+    toggleMenu();
   }
 
   // Associa handlers específicos como propriedades da função padrão
@@ -41,6 +57,7 @@ function App() {
   defaultHandler.profs = changePage(<Professores />);
   defaultHandler.coord = changePage(<Coordenacao />);
   defaultHandler.books = changePage(<Livros />);
+  defaultHandler.sites = changePage(<Sites />);
 
   addHandlers(options, defaultHandler);
 

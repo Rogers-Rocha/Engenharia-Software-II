@@ -57,7 +57,7 @@ function Livros() {
   return (
     <main className="livros-container">
       <div className="cabecalho-modulo">
-        <h1 style={{ fontWeight: "bold" }}>Catálogo de Livros</h1>
+        <h2>Catálogo de Livros</h2>
         <p>Livros utilizados pelos professores e alunos do curso</p>
       </div>
 
@@ -75,7 +75,9 @@ function Livros() {
                 key={livro.id}
                 href={livro.link}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="br-card hover clickable-card"
+                aria-label={`Acessar o site ${livro.nome}`}
               >
                 <div className="card-image">
                   <img
