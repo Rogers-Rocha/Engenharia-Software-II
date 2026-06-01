@@ -1,8 +1,8 @@
 import "./App.css";
-import "./Componentes/coordenacao.css";
+import "./css-classes/coordenacao.css";
 
-import Item from "./Componentes/itemCoord.jsx";
-import semfoto from "./Componentes/imagens/semfoto.jpg";
+import Item from "./componentes/itemCoord.jsx";
+import semfoto from "./assets/semfoto.jpg";
 
 function Coordenacao() {
   const items = [
@@ -11,18 +11,14 @@ function Coordenacao() {
       foto: semfoto,
       prof: "Frank Cézar Hipólito Luz",
       trab: "Coordenador",
-      contato: [
-        { nome: "frankcezar@gmail.com", tipo: "" },
-      ],
+      contato: [{ nome: "frankcezar@gmail.com", tipo: "" }],
     },
     {
       id: 2,
       foto: semfoto,
       prof: "Rayner Sousa Carvalho",
       trab: "Sub-Coordenador",
-      contato: [
-        { nome: "raynersousa@gmail.com", tipo: "" },
-      ],
+      contato: [{ nome: "raynersousa@gmail.com", tipo: "" }],
     },
   ];
 

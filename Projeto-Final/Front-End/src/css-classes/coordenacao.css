@@ -1,0 +1,98 @@
+.item-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* CARD */
+.item {
+  width: 280px;
+  min-height: 250px; 
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  box-sizing: border-box;
+
+  transition: 0.2s;
+  background: #fff;
+}
+
+.item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* FOTO */
+.foto-professor {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* CONTEÚDO */
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.nome {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.cargo {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* BOTÃO CONTATO */
+.btn-contato {
+  margin-top: 8px;
+  padding: 6px 12px;
+
+  color: #007bff;
+  border: 1px solid #007bff;
+  background: transparent;
+
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.btn-contato:hover {
+  background: #007bff;
+  color: white;
+}
+
+.btn-contato.ativo {
+  background: #007bff;
+  color: white;
+}
+
+/* LISTA DE CONTATO */
+.lista-contato {
+  margin-top: 10px;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.lista-contato li {
+  font-size: 14px;
+  margin-bottom: 6px;
+  word-break: break-word;
+}

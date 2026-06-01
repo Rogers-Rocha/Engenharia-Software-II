@@ -1,12 +1,15 @@
 import { useState } from "react";
-import Header from "./Header.jsx";
-import Menu from "./Menu.jsx";
-import Home from "./Home.jsx";
-import Socials from "./Socials.jsx";
-import options from "./options.json";
-import Professores from './professores.jsx';
-import Coordenacao from "./coordenacao.jsx";
+
+import Header from "./header.jsx";
+import Menu from "./menu.jsx";
 import { addHandlers, objToOpt } from "./options.jsx";
+import options from "./assets/options.json";
+
+import Home from "./home.jsx";
+import Socials from "./socials.jsx";
+import Professores from "./professores.jsx";
+import Coordenacao from "./coordenacao.jsx";
+
 import "./App.css";
 
 function App() {
