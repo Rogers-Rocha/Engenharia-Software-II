@@ -27,7 +27,7 @@ export function addHandlers(options, handler) {
     } else if (value.type == "folder") {
       options[key].handler = handleToggleFolder;
       for (const innerKey of Object.keys(value.items)) {
-        options[key].items[innerKey].handler = handler[key] ?? handler;
+        options[key].items[innerKey].handler = handler[innerKey] ?? handler;
       }
     }
   }

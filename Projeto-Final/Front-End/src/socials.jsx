@@ -36,7 +36,7 @@ const socialLinks = [
 
 function Socials() {
   return (
-    <div className="container-lg socials-page">
+    <div className="socials-page">
       <div className="socials-header">
         <h2>Redes Sociais</h2>
         <p className="socials-subtitle">

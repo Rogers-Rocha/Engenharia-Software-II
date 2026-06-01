@@ -141,7 +141,7 @@ function Professores() {
 
   return (
     <div className="professores">
-      <h1>Lista de professores</h1>
+      <h2>Lista de professores</h2>
 
       <div className="item-lista">
         {items.map((item) => (

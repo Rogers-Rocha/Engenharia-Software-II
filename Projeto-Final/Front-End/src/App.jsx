@@ -9,6 +9,7 @@ import Home from "./home.jsx";
 import Socials from "./socials.jsx";
 import Professores from "./professores.jsx";
 import Coordenacao from "./coordenacao.jsx";
+import Livros from "./livros.jsx";
 
 import "./App.css";
 
@@ -39,6 +40,7 @@ function App() {
   defaultHandler.socials = changePage(<Socials />);
   defaultHandler.profs = changePage(<Professores />);
   defaultHandler.coord = changePage(<Coordenacao />);
+  defaultHandler.books = changePage(<Livros />);
 
   addHandlers(options, defaultHandler);
 

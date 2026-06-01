@@ -24,7 +24,7 @@ function Coordenacao() {
 
   return (
     <div className="coordenacao">
-      <h1>Coordenação</h1>
+      <h2>Coordenação</h2>
 
       <div className="item-lista">
         {items.map((item) => (

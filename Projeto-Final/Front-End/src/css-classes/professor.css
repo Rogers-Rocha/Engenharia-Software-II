@@ -1,4 +1,4 @@
-.item-lista { 
+.item-lista {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -7,9 +7,9 @@
 
 /* CARD */
 .item {
-  flex: 1 1 300px;   /* 🔥 faz os cards se ajustarem automaticamente */
+  flex: 1 1 300px; /* faz os cards se ajustarem automaticamente */
   max-width: 100%;
-  min-height: 350px; 
+  min-height: 350px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 10px;
