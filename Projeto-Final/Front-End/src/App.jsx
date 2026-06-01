@@ -11,6 +11,8 @@ import Professores from "./professores.jsx";
 import Coordenacao from "./coordenacao.jsx";
 import Livros from "./livros.jsx";
 import Sites from "./sites.jsx";
+import Eventos from "./eventos.jsx";
+import Noticias from "./noticias.jsx";
 
 import "./App.css";
 
@@ -58,6 +60,8 @@ function App() {
   defaultHandler.coord = changePage(<Coordenacao />);
   defaultHandler.books = changePage(<Livros />);
   defaultHandler.sites = changePage(<Sites />);
+  defaultHandler.events = changePage(<Eventos />);
+  defaultHandler.news = changePage(<Noticias />);
 
   addHandlers(options, defaultHandler);
 
