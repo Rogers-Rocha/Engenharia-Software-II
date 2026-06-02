@@ -1,8 +1,8 @@
-import "./App.css";
-import "./css-classes/coordenacao.css";
+import "../App.css";
+import "../css-classes/coordenacao.css";
 
-import Item from "./componentes/itemCoord.jsx";
-import semfoto from "./assets/semfoto.jpg";
+import Item from "../componentes/itemCoord.jsx";
+import semfoto from "../assets/semfoto.jpg";
 
 function Coordenacao() {
   const items = [

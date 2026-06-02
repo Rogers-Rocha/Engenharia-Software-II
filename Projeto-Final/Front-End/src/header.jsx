@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 
+import Logo from "./assets/logo-site-si.jpg";
+
 function Header({ goToHome, openMenu, fazerPesquisa }) {
   const [inputPesquisa, setInputPesquisa] = useState("");
 
@@ -31,7 +33,7 @@ function Header({ goToHome, openMenu, fazerPesquisa }) {
           {/* Logo e Título com interação para Home */}
           <div className="header-logo">
             <img
-              src="src/assets/logo-site-si.png"
+              src={Logo}
               alt="Logo"
               onClick={goToHome}
               style={{ cursor: "pointer" }}

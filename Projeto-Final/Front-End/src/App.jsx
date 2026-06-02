@@ -5,15 +5,15 @@ import Menu from "./menu.jsx";
 import { addHandlers, objToOpt } from "./options.jsx";
 import options from "./assets/options.json";
 
-import Home from "./home.jsx";
-import Socials from "./socials.jsx";
-import Professores from "./professores.jsx";
-import Coordenacao from "./coordenacao.jsx";
-import Laboratorios from "./laboratorios.jsx";
-import Livros from "./livros.jsx";
-import Sites from "./sites.jsx";
-import Eventos from "./eventos.jsx";
-import Noticias from "./noticias.jsx";
+import Home from "./paginas/home.jsx";
+import Socials from "./paginas/socials.jsx";
+import Professores from "./paginas/professores.jsx";
+import Coordenacao from "./paginas/coordenacao.jsx";
+import Laboratorios from "./paginas/laboratorios.jsx";
+import Livros from "./paginas/livros.jsx";
+import Sites from "./paginas/sites.jsx";
+import Eventos from "./paginas/eventos.jsx";
+import Noticias from "./paginas/noticias.jsx";
 
 import "./App.css";
 

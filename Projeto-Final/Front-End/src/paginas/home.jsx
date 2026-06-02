@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import "./App.css";
-import "./css-classes/home.css";
+import "../App.css";
+import "../css-classes/home.css";
 
 // Mock de notícias para o carrossel
 const noticiasDestaque = [

@@ -1,5 +1,5 @@
-import "./App.css";
-import "./css-classes/eventos.css";
+import "../App.css";
+import "../css-classes/eventos.css";
 
 // Mock de dados: Eventos relevantes para S.I. na UFPI/CSHNB
 const catalogoEventos = [

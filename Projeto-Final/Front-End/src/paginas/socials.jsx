@@ -1,5 +1,5 @@
-import "./App.css";
-import "./css-classes/socials.css";
+import "../App.css";
+import "../css-classes/socials.css";
 
 // substitua os links pelos as url reais!!!(lembrar)
 

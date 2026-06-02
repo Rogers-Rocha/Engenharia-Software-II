@@ -1,5 +1,5 @@
-import "./App.css";
-import "./css-classes/noticias.css";
+import "../App.css";
+import "../css-classes/noticias.css";
 
 // Mock de dados: Notícias e Avisos do Campus
 const mockNoticias = [

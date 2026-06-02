@@ -1,5 +1,5 @@
-import "./App.css";
-import "./css-classes/sites.css";
+import "../App.css";
+import "../css-classes/sites.css";
 
 // Mock de dados: Categorias e seus respectivos sites
 const catalogoSites = [

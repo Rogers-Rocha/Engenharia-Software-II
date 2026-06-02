@@ -1,5 +1,5 @@
-import "./App.css";
-import "./css-classes/livros.css";
+import "../App.css";
+import "../css-classes/livros.css";
 
 // Mock de dados: Simulando o retorno de uma API ou Banco de Dados
 const catalogo = [

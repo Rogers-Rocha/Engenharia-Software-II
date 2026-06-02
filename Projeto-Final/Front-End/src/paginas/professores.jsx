@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import "./App.css";
-import "./css-classes/professor.css";
+import "../App.css";
+import "../css-classes/professor.css";
 
-import Item from "./componentes/itemProf.jsx";
-import semfoto from "./assets/semfoto.jpg";
+import Item from "../componentes/itemProf.jsx";
+import semfoto from "../assets/semfoto.jpg";
 
 function Professores() {
   const [items] = useState([
