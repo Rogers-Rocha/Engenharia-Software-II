@@ -1,10 +1,16 @@
 import { useState } from "react";
 
+// Módulo do Header
+//  - componente que fica na parte superior do site
 import Header from "./header.jsx";
+// Módulo do Menu principal
+//  - fica oculto até que o botão do menu que está no Header seja acionado
 import Menu from "./menu.jsx";
+// Módulo auxiliar do Menu para controlar o comportamento das opções do menu
 import { addHandlers, objToOpt } from "./options.jsx";
 import options from "./assets/options.json";
 
+// Módulos de cada página do site
 import Home from "./paginas/home.jsx";
 import Socials from "./paginas/socials.jsx";
 import Professores from "./paginas/professores.jsx";
@@ -15,14 +21,15 @@ import Sites from "./paginas/sites.jsx";
 import Eventos from "./paginas/eventos.jsx";
 import Noticias from "./paginas/noticias.jsx";
 
+// Import das classes css globais
 import "./App.css";
 
 function App() {
-  const [menuIsOpen, setMenuOpen] = useState(false);
-  const [pagina, setPagina] = useState(<Home />);
+  const [menuIsOpen, setMenuOpen] = useState(false); // Controla o estado do Menu (aberto ou fechado)
+  const [pagina, setPagina] = useState(<Home />); // Controla qual o conteúdo da página
 
   const toggleMenu = () => {
-    // Fecha os folders abertos do menu quando o menu for fechado
+    // Fecha todo os folders abertos quando o menu for fechado
     if (menuIsOpen) {
       const pastasAbertas = document.querySelectorAll(".menu-folder.active");
       pastasAbertas.forEach((pasta) => {
@@ -45,16 +52,14 @@ function App() {
     toggleMenu();
   };
 
-  // Handler padrão — apenas fecha o menu sem mudar de página
+  // Fallback para troca de página = somente fecha o menu
   function defaultHandler(e) {
     e.preventDefault();
     toggleMenu();
   }
 
-  // Associa handlers específicos como propriedades da função padrão
-  // addHandlers faz: options[key].handler = handler[key] ?? handler
-  // Para chaves com handler específico (ex: home, socials) usa o específico
-  // Para as demais, usa o defaultHandler (a própria função)
+  // Associa handlers específicos com a chave equivalente da página (ex: defaultHandler.home = ...)
+  // Caso o handler não seja fornecido, usa o defaultHandler (fallback)
   defaultHandler.home = changePage(<Home />);
   defaultHandler.socials = changePage(<Socials />);
   defaultHandler.profs = changePage(<Professores />);
@@ -65,8 +70,10 @@ function App() {
   defaultHandler.events = changePage(<Eventos />);
   defaultHandler.news = changePage(<Noticias />);
 
+  // Adiciona os handler ao objeto que representa as opções do Menu
   addHandlers(options, defaultHandler);
 
+  // Mock da pesquisa no site
   const tempPesquisa = (inputPesquisa) =>
     alert(`Pesquisando ${inputPesquisa}...`);
 

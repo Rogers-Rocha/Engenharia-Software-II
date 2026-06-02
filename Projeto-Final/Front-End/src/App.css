@@ -1,3 +1,6 @@
 @import "./index.css";
+
+/* Import das classes css da font awesome. (Dependência do govbr-ds) */
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+/* Import das classes css do govbr-ds */
 @import "@govbr-ds/core/dist/core.min.css";

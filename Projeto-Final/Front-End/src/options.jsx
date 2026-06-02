@@ -1,6 +1,6 @@
 import "./App.css";
 
-// Função para abrir/fechar folders do menu principal
+// Handler para abrir/fechar folders do menu principal
 const handleToggleFolder = (e) => {
   e.preventDefault();
 
@@ -25,7 +25,9 @@ export function addHandlers(options, handler) {
     if (value.type == "item") {
       options[key].handler = handler[key] ?? handler;
     } else if (value.type == "folder") {
+      // Adiciona o handler específico para folders
       options[key].handler = handleToggleFolder;
+      // Adiciona os handlers de cada um das opções dentro do folder
       for (const innerKey of Object.keys(value.items)) {
         options[key].items[innerKey].handler = handler[innerKey] ?? handler;
       }
@@ -33,6 +35,7 @@ export function addHandlers(options, handler) {
   }
 }
 
+// Retorna um componente contendo as opções de um folder
 const expandFolder = (folder) => (
   <ul style={{ display: "none" }}>
     {Object.values(folder.items).map((option, index) => (
@@ -45,19 +48,19 @@ const expandFolder = (folder) => (
   </ul>
 );
 
-// Converte um objeto em uma opção para o menu principal
+// Converte um objeto em uma das opções para o componente do menu principal
 export function objToOpt(option, index) {
+  const addSeta = (
+    <span className="support">
+      <i className="fas fa-angle-down" />
+    </span>
+  );
+
   return (
     <div className="menu-folder" key={index}>
       <a className="menu-item" href={option.href} onClick={option.handler}>
         <span className="content">{option.name}</span>
-        {option.type === "folder" ? (
-          <span className="support">
-            <i className="fas fa-angle-down"></i>
-          </span>
-        ) : (
-          <></>
-        )}
+        {option.type === "folder" ? addSeta : <></>}
       </a>
       {option.type === "folder" ? expandFolder(option) : <></>}
     </div>

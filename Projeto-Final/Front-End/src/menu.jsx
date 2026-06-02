@@ -1,5 +1,8 @@
 import "./App.css";
 
+// isOpen     = O estado do Menu (aberto ou fechado)
+// toggleMenu = Handler para alternar o estado do Menu
+// options    = Componente contendo as opções do Menu
 function Menu({ isOpen, toggleMenu, options }) {
   return (
     <div className={`br-menu ${isOpen ? "active" : ""}`} id="main-navigation">
@@ -26,8 +29,8 @@ function Menu({ isOpen, toggleMenu, options }) {
           {options}
         </div>
 
-        {/* Scrim (fundo escurecido) que fecha o menu ao clicar fora*/}
-        <div className="menu-scrim" onClick={toggleMenu}></div>
+        {/* Fundo que escurece o resto da página e que fecha o menu ao ser clicado*/}
+        <div className="menu-scrim" onClick={toggleMenu} />
       </div>
     </div>
   );
