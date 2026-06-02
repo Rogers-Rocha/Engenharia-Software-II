@@ -1,6 +1,6 @@
 import "./App.css";
 
-import Carrossel from "./carrossel";
+import Carrossel from "./componentes/carrossel";
 
 function Home() {
   return (

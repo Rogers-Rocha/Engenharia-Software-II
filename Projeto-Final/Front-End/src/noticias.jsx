@@ -12,7 +12,7 @@ const mockNoticias = [
       "Atenção, discentes! O sistema SIGAA estará aberto para matrículas curriculares na próxima semana. Confira o edital e não perca os prazos.",
     imagem:
       "https://placehold.co/600x300/1351b4/ffffff?text=Matriculas+Abertas",
-    link: "#",
+    link: "https://noticias.ufpi.br/12345",
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const mockNoticias = [
       "A Equatorial informou que haverá manutenção na rede elétrica do campus neste sábado. Os laboratórios de informática estarão indisponíveis.",
     imagem:
       "https://placehold.co/600x300/e0e0e0/333333?text=Aviso+de+Manutencao",
-    link: "#",
+    link: "https://noticias.ufpi.br/12345",
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const mockNoticias = [
     resumo:
       "Projeto de extensão desenvolvido por alunos do 6º período visa facilitar a compra de fichas e visualização do cardápio do RU via smartphone.",
     imagem: "https://placehold.co/600x300/0b7a39/ffffff?text=App+do+RU",
-    link: "#",
+    link: "https://noticias.ufpi.br/12345",
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const mockNoticias = [
     resumo:
       "As defesas públicas de Trabalho de Conclusão de Curso começam hoje. Os eventos ocorrerão no Auditório e são abertos a todos os estudantes.",
     imagem: "https://placehold.co/600x300/b35900/ffffff?text=Defesas+de+TCC",
-    link: "#",
+    link: "https://noticias.ufpi.br/12345",
   },
 ];
 
@@ -72,6 +72,7 @@ function Noticias() {
           <a
             key={noticia.id}
             href={noticia.link}
+            target="_blank"
             className="br-card noticia-card clickable-card"
             aria-label={`Ler notícia: ${noticia.titulo}`}
           >
