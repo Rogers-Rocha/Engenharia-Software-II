@@ -79,7 +79,6 @@ function Sites() {
       {catalogoSites.map((secao, index) => (
         <section key={index} className="categoria-section">
           <h3 className="categoria-titulo">
-            {/* Mantive apenas o ícone do título da categoria */}
             <i
               className={`${secao.iconeSecao} titulo-icone`}
               aria-hidden="true"
@@ -98,7 +97,6 @@ function Sites() {
                 className="br-card hover clickable-card site-card"
                 aria-label={`Acessar o site ${site.nome}`}
               >
-                {/* Removidos os ícones: O card agora foca apenas no conteúdo textual */}
                 <div className="card-content">
                   <h4 className="site-titulo">{site.nome}</h4>
                   <p className="site-descricao">{site.descricao}</p>

@@ -6,7 +6,7 @@ const mockNoticias = [
   {
     id: 1,
     categoria: "Calendário Acadêmico",
-    dataPublicacao: new Date(2026, 4, 25), // 25/05/2026
+    dataPublicacao: new Date(2026, 4, 25),
     titulo: "Período de Matrículas para o Semestre 2026.2",
     resumo:
       "Atenção, discentes! O sistema SIGAA estará aberto para matrículas curriculares na próxima semana. Confira o edital e não perca os prazos.",
@@ -17,7 +17,7 @@ const mockNoticias = [
   {
     id: 2,
     categoria: "Manutenção",
-    dataPublicacao: new Date(2026, 5, 1), // 01/06/2026
+    dataPublicacao: new Date(2026, 5, 1),
     titulo: "Desligamento Programado de Energia no CSHNB",
     resumo:
       "A Equatorial informou que haverá manutenção na rede elétrica do campus neste sábado. Os laboratórios de informática estarão indisponíveis.",
@@ -28,7 +28,7 @@ const mockNoticias = [
   {
     id: 3,
     categoria: "Comunidade",
-    dataPublicacao: new Date(2026, 5, 2), // 02/06/2026
+    dataPublicacao: new Date(2026, 5, 2),
     titulo: "Alunos de S.I. lançam novo app para Restaurante Universitário",
     resumo:
       "Projeto de extensão desenvolvido por alunos do 6º período visa facilitar a compra de fichas e visualização do cardápio do RU via smartphone.",
@@ -38,7 +38,7 @@ const mockNoticias = [
   {
     id: 4,
     categoria: "Eventos",
-    dataPublicacao: new Date(2026, 5, 5), // 05/06/2026
+    dataPublicacao: new Date(2026, 5, 5),
     titulo: "Defesas de TCC: Confira a agenda da semana",
     resumo:
       "As defesas públicas de Trabalho de Conclusão de Curso começam hoje. Os eventos ocorrerão no Auditório e são abertos a todos os estudantes.",
@@ -51,7 +51,7 @@ const mockNoticias = [
 const formatarData = (dataBase) => {
   return dataBase.toLocaleDateString("pt-BR", {
     day: "2-digit",
-    month: "long", // Ex: "01 de junho"
+    month: "long",
     year: "numeric",
   });
 };

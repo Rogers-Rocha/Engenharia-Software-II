@@ -5,35 +5,35 @@ import "../css-classes/laboratorios.css";
 
 import Item from "../componentes/itemLab.jsx";
 
-function Laboratorios() {
-  const [items] = useState([
-    {
-      id: 1,
-      nome: "Laboratório 1",
-      status: "Laboratório Disponível",
-      localizacao: "Localização: sala 813",
-    },
-    {
-      id: 2,
-      nome: "Laboratório 2",
-      status: "Laboratório Indisponível",
-      localizacao: "Localização: sala 814",
-    },
-    {
-      id: 3,
-      nome: "PASID",
-      status: "Laboratório Disponível",
-      localizacao:
-        "Localização: Primeira sala à esquerda no bloco de enfermagem",
-    },
-    {
-      id: 4,
-      nome: "PAAD",
-      status: "Laboratório Disponível",
-      localizacao: "Localização: Segunda sala no bloco de enfermagem",
-    },
-  ]);
+// Mock de dados dos laboratórios
+const items = [
+  {
+    id: 1,
+    nome: "Laboratório 1",
+    status: "Laboratório Disponível",
+    localizacao: "Localização: sala 813",
+  },
+  {
+    id: 2,
+    nome: "Laboratório 2",
+    status: "Laboratório Indisponível",
+    localizacao: "Localização: sala 814",
+  },
+  {
+    id: 3,
+    nome: "PASID",
+    status: "Laboratório Disponível",
+    localizacao: "Localização: Primeira sala à esquerda no bloco de enfermagem",
+  },
+  {
+    id: 4,
+    nome: "PAAD",
+    status: "Laboratório Disponível",
+    localizacao: "Localização: Segunda sala no bloco de enfermagem",
+  },
+];
 
+function Laboratorios() {
   return (
     <div className="laboratorios">
       <h2>Lista de laboratórios</h2>
@@ -54,7 +54,6 @@ function Laboratorios() {
 
       <div className="item-lista">
         {items.map((item) => (
-          // Seguindo a mesma estrutura, o objeto 'item' é passado como propriedade para o componente Item
           <Item key={item.id} item={item} />
         ))}
       </div>

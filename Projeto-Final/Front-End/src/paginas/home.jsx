@@ -36,11 +36,11 @@ const noticiasDestaque = [
   },
 ];
 
-function Home() {
+// atalhos = referência de uma array contendo os atalhos da página Home
+function Home({ atalhosRef }) {
   // Estado para controlar o índice atual do carrossel
   const [slideAtual, setSlideAtual] = useState(0);
 
-  // Funções de navegação do carrossel
   const proximoSlide = () => {
     setSlideAtual((prev) =>
       prev === noticiasDestaque.length - 1 ? 0 : prev + 1,
@@ -59,9 +59,8 @@ function Home() {
 
   return (
     <main className="home-container container-lg">
-      {/* LINHA SUPERIOR: Hero lado a lado com o Carrossel */}
       <div className="top-row">
-        {/* 1. Seção Hero (Boas-vindas) */}
+        {/* Seção de Boas-vindas */}
         <section>
           <div>
             <h2>Bem vindo ao Site do Curso de Sistemas de Informação</h2>
@@ -72,8 +71,9 @@ function Home() {
           </div>
         </section>
 
-        {/* 2. Seção do Carrossel de Notícias */}
+        {/* Seção das Notícias */}
         <section className="carrossel-section">
+          {/* Conteúdo do carrossel de notícias */}
           <div className="carrossel-wrapper">
             <div
               className="carrossel-track"
@@ -97,6 +97,7 @@ function Home() {
               ))}
             </div>
 
+            {/* Botões de navegação do carrossel de notícias */}
             <button
               className="br-button circle carrossel-btn btn-prev"
               onClick={slideAnterior}
@@ -127,25 +128,21 @@ function Home() {
         </section>
       </div>
 
-      {/* 3. Seção de Atalhos Rápidos (Abaixo do bloco principal) */}
+      {/* Seção de Atalhos Rápidos */}
       <section className="atalhos-section">
         <div className="atalhos-grid">
-          <a href="#eventos" className="br-card atalho-card">
-            <i className="fas fa-calendar-alt fa-2x atalho-icone"></i>
-            <h3>Eventos</h3>
-          </a>
-          <a href="#livros" className="br-card atalho-card">
-            <i className="fas fa-book fa-2x atalho-icone"></i>
-            <h3>Livros</h3>
-          </a>
-          <a href="#sites" className="br-card atalho-card">
-            <i className="fas fa-link fa-2x atalho-icone"></i>
-            <h3>Sites Importantes</h3>
-          </a>
-          <a href="#noticias" className="br-card atalho-card">
-            <i className="fas fa-newspaper fa-2x atalho-icone"></i>
-            <h3>Notícias</h3>
-          </a>
+          {atalhosRef.value.map((atalho, index) => (
+            <a
+              key={index}
+              href={atalho.href}
+              target="_blank"
+              className="br-card atalho-card"
+              onClick={atalho.handler}
+            >
+              <i className={`fas ${atalho.icon} fa-2x atalho-icone`}></i>
+              <h3>{atalho.name}</h3>
+            </a>
+          ))}
         </div>
       </section>
     </main>

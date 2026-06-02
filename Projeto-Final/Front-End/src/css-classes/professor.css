@@ -5,7 +5,7 @@
   width: 100%; /* ocupa toda a largura */
 }
 
-/* CARD */
+/* Card */
 .item {
   flex: 1 1 300px;
   max-width: 100%;
@@ -28,7 +28,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* FOTO */
 .foto-professor {
   width: 80px;
   height: 80px;
@@ -37,7 +36,6 @@
   margin-bottom: 8px;
 }
 
-/* CONTEÚDO */
 .conteudo {
   display: flex;
   flex-direction: column;
@@ -45,7 +43,6 @@
   width: 100%;
 }
 
-/* 👇 NOVO: SALA */
 .sala {
   font-size: 13px;
   color: #777; /* cinza discreto */
@@ -53,14 +50,12 @@
   font-style: italic;
 }
 
-/* BOTÕES */
 button {
   background: none;
   cursor: pointer;
   font-weight: bold;
 }
 
-/* DISCIPLINAS */
 .btn-disciplinas {
   color: blue;
   border: 1px solid blue;
@@ -80,7 +75,6 @@ button {
   text-decoration: underline;
 }
 
-/* PROJETOS */
 .btn-projetos {
   color: green;
   border: 1px solid green;
@@ -100,7 +94,6 @@ button {
   text-decoration: underline;
 }
 
-/* LISTAS */
 .lista-disciplinas,
 .lista-projetos {
   margin-top: 8px;
@@ -116,7 +109,6 @@ button {
   margin-bottom: 6px;
 }
 
-/* BOTÃO DETALHES */
 .btn-detalhes {
   margin-top: 6px;
   padding: 4px 8px;
@@ -139,7 +131,6 @@ button {
   color: white;
 }
 
-/* DESCRIÇÃO */
 .descricao {
   font-size: 12px;
   margin-top: 4px;

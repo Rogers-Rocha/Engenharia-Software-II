@@ -8,6 +8,7 @@ import Header from "./header.jsx";
 import Menu from "./menu.jsx";
 // Módulo auxiliar do Menu para controlar o comportamento das opções do menu
 import { addHandlers, objToOpt } from "./options.jsx";
+// Carrega o objeto que representa as opções do Menu principal
 import options from "./assets/options.json";
 
 // Módulos de cada página do site
@@ -26,8 +27,8 @@ import "./App.css";
 
 function App() {
   const [menuIsOpen, setMenuOpen] = useState(false); // Controla o estado do Menu (aberto ou fechado)
-  const [pagina, setPagina] = useState(<Home />); // Controla qual o conteúdo da página
 
+  // Alterna o estado do Menu
   const toggleMenu = () => {
     // Fecha todo os folders abertos quando o menu for fechado
     if (menuIsOpen) {
@@ -45,6 +46,10 @@ function App() {
     setMenuOpen(!menuIsOpen);
   };
 
+  const atalhos = { value: [] };
+  const home = <Home atalhosRef={atalhos} />; // Inicializa a home com uma referência aos atalhos (atalhos.value = [...])
+  const [pagina, setPagina] = useState(home); // Controla qual o conteúdo da página (Inicia na Home)
+
   // Factory que retorna um handler que troca a página e fecha o menu
   const changePage = (component) => (e) => {
     e.preventDefault();
@@ -58,9 +63,49 @@ function App() {
     toggleMenu();
   }
 
+  // Array contendo os atalhos da página home
+  atalhos.value = [
+    {
+      name: options.events.name,
+      handler: (e) => {
+        e.preventDefault();
+        setPagina(<Eventos />);
+      },
+      href: options.events.href,
+      icon: "fa-calendar-alt",
+    },
+    {
+      name: options.profs.name,
+      handler: (e) => {
+        e.preventDefault();
+        setPagina(<Professores />);
+      },
+      href: options.profs.href,
+      icon: "fa-user",
+    },
+    {
+      name: options.study.items.books.name,
+      handler: (e) => {
+        e.preventDefault();
+        setPagina(<Livros />);
+      },
+      href: options.study.items.books.href,
+      icon: "fa-book",
+    },
+    {
+      name: options.study.items.sites.name,
+      handler: (e) => {
+        e.preventDefault();
+        setPagina(<Sites />);
+      },
+      href: options.study.items.sites.href,
+      icon: "fa-link",
+    },
+  ];
+
   // Associa handlers específicos com a chave equivalente da página (ex: defaultHandler.home = ...)
   // Caso o handler não seja fornecido, usa o defaultHandler (fallback)
-  defaultHandler.home = changePage(<Home />);
+  defaultHandler.home = changePage(home);
   defaultHandler.socials = changePage(<Socials />);
   defaultHandler.profs = changePage(<Professores />);
   defaultHandler.coord = changePage(<Coordenacao />);
@@ -80,7 +125,7 @@ function App() {
   return (
     <>
       <Header
-        goToHome={() => setPagina(<Home />)}
+        goToHome={() => setPagina(home)}
         openMenu={toggleMenu}
         fazerPesquisa={tempPesquisa}
       />

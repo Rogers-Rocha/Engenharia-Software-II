@@ -4,10 +4,10 @@
   gap: 16px;
 }
 
-/* CARD */
+/* Card */
 .item {
   width: 280px;
-  min-height: 250px; 
+  min-height: 250px;
   padding: 16px;
   border: 1px solid #ccc;
   border-radius: 12px;
@@ -27,7 +27,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* FOTO */
 .foto-professor {
   width: 90px;
   height: 90px;
@@ -36,7 +35,6 @@
   margin-bottom: 10px;
 }
 
-/* CONTEÚDO */
 .conteudo {
   display: flex;
   flex-direction: column;
@@ -57,7 +55,6 @@
   font-style: italic;
 }
 
-/* BOTÃO CONTATO */
 .btn-contato {
   margin-top: 8px;
   padding: 6px 12px;
@@ -83,7 +80,6 @@
   color: white;
 }
 
-/* LISTA DE CONTATO */
 .lista-contato {
   margin-top: 10px;
   padding: 0;

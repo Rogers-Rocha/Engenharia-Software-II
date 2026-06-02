@@ -1,8 +1,9 @@
 function Item({ item }) {
-  // Define a classe de cor com base no status do laboratório
-  const statusClass = item.status === "Laboratório Disponível" 
-    ? "status-disponivel" 
-    : "status-indisponivel";
+  // Define a cor com base no status do laboratório
+  const statusClass =
+    item.status === "Laboratório Disponível"
+      ? "status-disponivel"
+      : "status-indisponivel";
 
   return (
     <div className="card-lab">

@@ -1,17 +1,17 @@
 import "../App.css";
 import "../css-classes/eventos.css";
 
-// Mock de dados: Eventos relevantes para S.I. na UFPI/CSHNB
+// Mock de dados dos Eventos
 const catalogoEventos = [
   {
     id: 1,
     nome: "SINFO - Simpósio de Sistemas de Informação",
     descricao:
       "O principal evento anual do curso de S.I. da UFPI/CSHNB. Conta com palestras de especialistas do mercado, minicursos práticos, maratona de programação e submissão de artigos científicos.",
-    inscricaoInicio: new Date(2026, 7, 1), // 01/08/2026
-    inscricaoFim: new Date(2026, 7, 15), // 15/08/2026
-    dataInicio: new Date(2026, 7, 20), // 20/08/2026
-    dataFim: new Date(2026, 7, 23), // 23/08/2026
+    inscricaoInicio: new Date(2026, 7, 1),
+    inscricaoFim: new Date(2026, 7, 15),
+    dataInicio: new Date(2026, 7, 20),
+    dataFim: new Date(2026, 7, 23),
     linkInscricao: "https://sigeventos.ufpi.br/evento/sinfo2026",
   },
   {
@@ -19,10 +19,10 @@ const catalogoEventos = [
     nome: "StartUFPI",
     descricao:
       "Evento voltado para inovação e empreendedorismo universitário. Equipes de alunos montam modelos de negócios para startups e apresentam para bancas de investidores e professores.",
-    inscricaoInicio: new Date(2026, 8, 10), // 10/09/2026
-    inscricaoFim: new Date(2026, 8, 30), // 30/09/2026
-    dataInicio: new Date(2026, 9, 5), // 05/10/2026
-    dataFim: new Date(2026, 9, 7), // 07/10/2026
+    inscricaoInicio: new Date(2026, 8, 10),
+    inscricaoFim: new Date(2026, 8, 30),
+    dataInicio: new Date(2026, 9, 5),
+    dataFim: new Date(2026, 9, 7),
     linkInscricao: "https://sigeventos.ufpi.br/evento/startufpi",
   },
   {
@@ -30,10 +30,10 @@ const catalogoEventos = [
     nome: "Hack the Data - UFPI",
     descricao:
       "Um Hackathon intensivo de 48 horas focado em Ciência de Dados e Inteligência Artificial. Resolva problemas reais da região de Picos utilizando grandes volumes de dados.",
-    inscricaoInicio: new Date(2026, 4, 1), // 01/05/2026
-    inscricaoFim: new Date(2026, 4, 30), // 30/05/2026
-    dataInicio: new Date(2026, 4, 31), // 31/05/2026
-    dataFim: new Date(2026, 5, 5), // 05/06/2026
+    inscricaoInicio: new Date(2026, 4, 1),
+    inscricaoFim: new Date(2026, 4, 30),
+    dataInicio: new Date(2026, 4, 31),
+    dataFim: new Date(2026, 5, 5),
     linkInscricao: "https://sigeventos.ufpi.br/evento/hackthedata",
   },
 ];
@@ -58,7 +58,6 @@ const obterStatusEvento = (
   }
 };
 
-// Helper para formatar a classe Date de volta para String no padrão brasileiro "DD/MM/YYYY" na hora de desenhar na tela
 const formatarData = (dataBase) => {
   return dataBase.toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -117,7 +116,6 @@ function Eventos() {
                         aria-hidden="true"
                       ></i>
                     </strong>
-                    {/* Convertendo as datas nativas para String na hora de renderizar */}
                     <span>
                       {formatarData(evento.inscricaoInicio)} a{" "}
                       {formatarData(evento.inscricaoFim)}
@@ -132,7 +130,6 @@ function Eventos() {
                   ></i>
                   <div className="data-info">
                     <strong>Período do Evento:</strong>
-                    {/* Convertendo as datas nativas para String na hora de renderizar */}
                     <span>
                       {formatarData(evento.dataInicio)} até{" "}
                       {formatarData(evento.dataFim)}

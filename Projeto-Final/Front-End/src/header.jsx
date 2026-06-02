@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// Import das classes css globais
 import "./App.css";
 
 import Logo from "./assets/logo-site-si.jpg";

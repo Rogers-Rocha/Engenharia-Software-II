@@ -6,7 +6,6 @@
   gap: 2.5rem; /* Espaçamento entre o bloco de cima e os atalhos */
 }
 
-/* --- LINHA SUPERIOR: Hero e Carrossel Lado a Lado --- */
 .top-row {
   display: grid;
   grid-template-columns: 1.5fr 1fr; /* Divide a tela exatamente no meio */
@@ -14,7 +13,6 @@
   align-items: stretch; /* Estica o bloco azul para ficar do mesmo tamanho do carrossel */
 }
 
-/* --- 2. Carrossel de Notícias --- */
 .carrossel-section {
   display: flex;
   flex-direction: column;
@@ -151,7 +149,6 @@
   transform: scale(1.3);
 }
 
-/* --- 3. Atalhos Rápidos --- */
 .atalhos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -194,7 +191,7 @@
   font-weight: 600;
 }
 
-/* --- Responsividade --- */
+/* Responsividade */
 @media (max-width: 992px) {
   /* Em telas menores (tablets e celulares), quebra para empilhado */
   .top-row {

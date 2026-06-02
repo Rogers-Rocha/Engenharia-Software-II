@@ -39,9 +39,7 @@ const Item = ({ item }) => {
 
         {/* BOTÃO PROJETOS */}
         <button
-          className={`btn-projetos ${
-            secaoAtiva === "projetos" ? "ativo" : ""
-          }`}
+          className={`btn-projetos ${secaoAtiva === "projetos" ? "ativo" : ""}`}
           onClick={() =>
             setSecaoAtiva(secaoAtiva === "projetos" ? null : "projetos")
           }
@@ -51,15 +49,15 @@ const Item = ({ item }) => {
 
         {secaoAtiva === "projetos" && item.projetos?.length > 0 && (
           <ul className="lista-projetos">
-            {item.projetos.map((proj) => (
-              <li key={proj.nome}>
+            {item.projetos.map((proj, index) => (
+              <li key={index}>
                 <p>{proj.nome}</p>
 
                 <button
                   className="btn-detalhes"
                   onClick={() =>
                     setDetalhesAberto(
-                      detalhesAberto === proj.nome ? null : proj.nome
+                      detalhesAberto === proj.nome ? null : proj.nome,
                     )
                   }
                 >
