@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import "./App.css";
-import "./css-classes/laboratorio.css";
+import "./css-classes/laboratorios.css";
 
 import Item from "./componentes/itemLab.jsx";
 
@@ -11,25 +11,25 @@ function Laboratorios() {
       id: 1,
       nome: "Laboratório 1",
       status: "Laboratório Disponível",
-      localizacao: "813",
+      localizacao: "Localização: sala 813",
     },
     {
       id: 2,
       nome: "Laboratório 2",
       status: "Laboratório Indisponível",
-      localizacao: "814",
+      localizacao: "Localização: sala 814",
     },
     {
       id: 3,
-      nome: "PAAD",
+      nome: "PASID",
       status: "Laboratório Disponível",
-      localizacao: "Segunda sala do bloco de enfermagem",
+      localizacao: "Localização: Primeira sala à esquerda no bloco de enfermagem",
     },
     {
       id: 4,
-      nome: "PASID",
+      nome: "PAAD",
       status: "Laboratório Disponível",
-      localizacao: "Primeira sala à esquerda do bloco de enfermagem",
+      localizacao: "Localização: Segunda sala no bloco de enfermagem",
     },
   ]);
 
@@ -41,8 +41,6 @@ function Laboratorios() {
         <p>
           Os laboratórios do Curso de Sistemas de Informação destinam-se a alunos que necessitam de um ambiente adequado para estudos, especialmente aqueles que não dispõem, em suas residências, de recursos como quadro branco e/ou computadores.
         </p>
-        <br />
-        <br />
         <p>
           Os Núcleos de Pesquisa são laboratórios destinados para aqueles estudantes de Sistemas de Informação que fazem parte de algum projeto de pesquisa.
         </p>

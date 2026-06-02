@@ -12,6 +12,9 @@ const Item = ({ item }) => {
       <div className="conteudo">
         <p>{item.prof}</p>
 
+        {/* CAMPO SALA */}
+        <p className="sala">{item.sala}</p>
+
         {/* BOTÃO DISCIPLINAS */}
         <button
           className={`btn-disciplinas ${
@@ -36,7 +39,9 @@ const Item = ({ item }) => {
 
         {/* BOTÃO PROJETOS */}
         <button
-          className={`btn-projetos ${secaoAtiva === "projetos" ? "ativo" : ""}`}
+          className={`btn-projetos ${
+            secaoAtiva === "projetos" ? "ativo" : ""
+          }`}
           onClick={() =>
             setSecaoAtiva(secaoAtiva === "projetos" ? null : "projetos")
           }
@@ -54,7 +59,7 @@ const Item = ({ item }) => {
                   className="btn-detalhes"
                   onClick={() =>
                     setDetalhesAberto(
-                      detalhesAberto === proj.nome ? null : proj.nome,
+                      detalhesAberto === proj.nome ? null : proj.nome
                     )
                   }
                 >

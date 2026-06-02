@@ -7,7 +7,7 @@
 
 /* CARD */
 .item {
-  flex: 1 1 300px; /* faz os cards se ajustarem automaticamente */
+  flex: 1 1 300px;
   max-width: 100%;
   min-height: 350px;
   padding: 10px;
@@ -43,6 +43,14 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+/* 👇 NOVO: SALA */
+.sala {
+  font-size: 13px;
+  color: #777; /* cinza discreto */
+  margin: 2px 0 6px 0;
+  font-style: italic;
 }
 
 /* BOTÕES */
