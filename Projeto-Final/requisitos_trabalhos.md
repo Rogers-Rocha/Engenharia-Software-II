@@ -1,0 +1,27 @@
+## ENGENHARIA DE SOFTWARE II
+
+### Prazo 26/06 +1 ponto ou 30/06 entrega final
+
+1. Persistência em Banco de dados
+2. Adoção de arquitetura(s) que atenda os requisitos do projeto
+3. Teste Unitário Automatizado
+
+## PROGRAMAÇÃO WEB I
+
+## PROGRAMAÇÃO WEB II
+
+### Fase 1 | ~~Prazo 27/05~~
+
+1. Comunicação síncrona e assíncrona (FETCH API)
+2. Web Storage API
+3. HTTP cookies
+4. Autenticação (HTTP, Web API, entre outros)
+5. Seguranção além de autenticação
+6. Validação de Formulários
+
+### Fase 2 | Prazo 01/06
+
+1. Integração com Banco de Dados (Simular acesso remoto com o docker)
+2. Uso de framework no server-side
+3. CI/CD com testes (Github Actions)
+4. Executar sistema em um servidor separado (Docker)
