@@ -19,7 +19,7 @@
 5. Seguranção além de autenticação
 6. Validação de Formulários
 
-### Fase 2 | Prazo 01/06
+### Fase 2 | Prazo 01/07
 
 1. Integração com Banco de Dados (Simular acesso remoto com o docker)
 2. Uso de framework no server-side
