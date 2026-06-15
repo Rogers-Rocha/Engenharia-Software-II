@@ -33,6 +33,6 @@ Qualquer requisíto que ocorra em pelo menos 2 disciplinas
 1. Integração com Banco de Dados (Eng2, Web2)
 2. CI/CD com testes + teste unitário automatizado? (Eng2, Web2)
 
-## Selecionados
+## SELECIONADOS
 
 Em ordem de prioridade
