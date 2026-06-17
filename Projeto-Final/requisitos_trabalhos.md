@@ -32,6 +32,11 @@ Qualquer requisíto que ocorra em pelo menos 2 disciplinas
 
 1. Integração com Banco de Dados (Eng2, Web2)
 2. CI/CD com testes + teste unitário automatizado? (Eng2, Web2)
+3. Comunicação síncrona e assíncrona (FETCH API(Web 1 e 2))
+4. Web Storage API (Web 1 e 2)
+5. HTTP cookies (Web 1 e 2)
+6. Autenticação (HTTP, Web API, entre outros) (Web 1 e 2)
+7. Seguranção além de autenticação (Web 1 e 2)
 
 ## SELECIONADOS
 
