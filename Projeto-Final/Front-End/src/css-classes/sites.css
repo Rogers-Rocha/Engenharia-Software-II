@@ -91,3 +91,7 @@ a.br-card.site-card:focus-visible {
     padding: 1.25rem;
   }
 }
+
+.menu-body a[href="#login"] {
+  color: #b91c1c !important;
+}

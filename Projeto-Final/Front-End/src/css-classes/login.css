@@ -1,0 +1,205 @@
+/* Container principal centralizado */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 120px);
+  padding: 2rem 1rem;
+}
+
+/* Card de login */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease;
+}
+
+.login-card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho do card */
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-icone {
+  font-size: 2.5rem;
+  color: #1351b4;
+  margin-bottom: 0.75rem;
+}
+
+.login-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+}
+
+.login-header p {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Formulário */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Campo individual */
+.login-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.login-campo label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Wrapper do input com ícone */
+.login-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 0 0.75rem;
+  background-color: #fafafa;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.login-input-wrapper:focus-within {
+  border-color: #1351b4;
+  background-color: #fff;
+}
+
+.input-icon {
+  color: #999;
+  font-size: 0.95rem;
+  margin-right: 0.6rem;
+  transition: color 0.2s ease;
+}
+
+.login-input-wrapper:focus-within .input-icon {
+  color: #1351b4;
+}
+
+.login-input-wrapper input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  color: #333;
+  outline: none;
+}
+
+.login-input-wrapper input::placeholder {
+  color: #aaa;
+}
+
+/* Botão olho (mostrar/ocultar senha) */
+.login-eye-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  padding: 0 0 0 0.5rem;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.login-eye-btn:hover {
+  color: #1351b4;
+}
+
+.login-input-wrapper:focus-within .login-eye-btn {
+  color: #1351b4;
+}
+
+/* Mensagem de erro */
+.login-erro {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #b91c1c;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: fadeIn 0.25s ease;
+}
+
+.login-erro i {
+  font-size: 1rem;
+}
+
+/* Botão de entrar */
+.login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem;
+  background-color: #1351b4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 0.5rem;
+}
+
+.login-btn:hover {
+  background-color: #0f3f8e;
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+.login-btn i {
+  font-size: 1rem;
+}
+
+/* Animação de fade-in para a mensagem de erro */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.3rem;
+  }
+}

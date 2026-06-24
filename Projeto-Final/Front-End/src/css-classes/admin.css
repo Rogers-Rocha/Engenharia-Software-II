@@ -1,0 +1,103 @@
+/* Container principal centralizado */
+.admin-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 120px);
+  padding: 2rem 1rem;
+}
+
+/* Card administrativo */
+.admin-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+/* Cabeçalho */
+.admin-header {
+  margin-bottom: 2rem;
+}
+
+.admin-icone {
+  font-size: 3rem;
+  color: #1351b4;
+  margin-bottom: 0.75rem;
+}
+
+.admin-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Informações do usuário */
+.admin-info {
+  background-color: #f8f9fa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-info-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-info-value {
+  font-size: 1.05rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Botão Sair */
+.admin-btn-sair {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background-color: #b91c1c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.admin-btn-sair:hover {
+  background-color: #991515;
+}
+
+.admin-btn-sair:active {
+  transform: scale(0.98);
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .admin-card {
+    padding: 2rem 1.25rem;
+  }
+}

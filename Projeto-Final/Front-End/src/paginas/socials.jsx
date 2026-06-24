@@ -1,9 +1,12 @@
 import "../App.css";
 import "../css-classes/socials.css";
 
+import { FaDiscord } from "react-icons/fa";
+
 // Mock dos links das redes sociais
 const socialLinks = [
   {
+    id: "whatsapp",
     name: "Grupo Geral",
     icon: "fab fa-whatsapp",
     description: "Grupo oficial do curso de Sistemas de Informação",
@@ -11,13 +14,16 @@ const socialLinks = [
     color: "#25D366",
   },
   {
+    id: "discord",
     name: "Discord",
     icon: "fab fa-discord",
+    iconComponent: FaDiscord,
     description: "Servidor do Discord da comunidade de S.I.",
     url: "https://discord.gg/",
     color: "#5865F2",
   },
   {
+    id: "instagram-ru",
     name: "Instagram Restaurante Universitário",
     icon: "fab fa-instagram",
     description: "Restaurante Universitário da UFPI",
@@ -25,13 +31,17 @@ const socialLinks = [
     color: "#E4405F",
   },
   {
+    id: "instagram-si",
     name: "Instagram do curso de S.I.",
     icon: "fab fa-instagram",
-    description: "instagram oficial do curso de S.I",
+    description: "Instagram oficial do curso de S.I",
     url: "https://www.instagram.com/si.ufpi?igsh=aHcxcTZ6aW1mZW02",
     color: "#E4405F",
   },
 ];
+
+// Ordem de exibição: [0, 2, 1, 3] -> 1 3 / 2 4
+const ordemExibicao = [0, 2, 1, 3];
 
 function Socials() {
   return (
@@ -44,29 +54,39 @@ function Socials() {
       </div>
 
       <div className="socials-grid">
-        {socialLinks.map((link, index) => (
-          <a
-            key={index}
-            href={link.url}
-            className="social-card"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div
-              className="social-icon-wrapper"
-              style={{ backgroundColor: link.color }}
+        {ordemExibicao.map((index) => {
+          const link = socialLinks[index];
+
+          // Discord usa SVG do react-icons; demais usam Font Awesome
+          const renderIcon = () => {
+            if (link.iconComponent) {
+              const IconComponent = link.iconComponent;
+              return <IconComponent className="social-icon social-icon-svg" style={{ color: link.color }} />;
+            }
+            return (
+              <i
+                className={`${link.icon} social-icon`}
+                style={{ color: link.color }}
+              ></i>
+            );
+          };
+
+          return (
+            <a
+              key={link.id}
+              href={link.url}
+              className="social-card"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <i className={link.icon}></i>
-            </div>
-            <div className="social-info">
-              <h3 className="social-name">{link.name}</h3>
-              <p className="social-description">{link.description}</p>
-            </div>
-            <div className="social-arrow">
-              <i className="fas fa-arrow-right"></i>
-            </div>
-          </a>
-        ))}
+              <div className="social-card-top">{renderIcon()}</div>
+              <div className="social-card-body">
+                <h3 className="social-name">{link.name}</h3>
+                <p className="social-description">{link.description}</p>
+              </div>
+            </a>
+          );
+        })}
       </div>
     </div>
   );

@@ -48,5 +48,10 @@
     "type": "item",
     "name": "Redes Sociais",
     "href": "#socials"
+  },
+  "login": {
+    "type": "item",
+    "name": "Área Administrativa",
+    "href": "#login"
   }
 }

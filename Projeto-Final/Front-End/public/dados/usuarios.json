@@ -1,0 +1,8 @@
+[
+  {
+    "nome": "Administrador",
+    "email": "admin@ufpi.edu.br",
+    "salt": "ufpi-admin-2026",
+    "senhaHash": "9f8fbaf0187e95f24f44c233dfef346af4725a765f6d1be826cc24295bac2ed2"
+  }
+]

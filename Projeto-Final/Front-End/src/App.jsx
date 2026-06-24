@@ -21,6 +21,9 @@ import Livros from "./paginas/livros.jsx";
 import Sites from "./paginas/sites.jsx";
 import Eventos from "./paginas/eventos.jsx";
 import Noticias from "./paginas/noticias.jsx";
+import Login from "./paginas/login.jsx";
+import Admin from "./paginas/admin.jsx";
+import CookieBanner from "./componentes/cookieBanner.jsx";
 
 // Import das classes css globais
 import "./App.css";
@@ -114,6 +117,18 @@ function App() {
   defaultHandler.sites = changePage(<Sites />);
   defaultHandler.events = changePage(<Eventos />);
   defaultHandler.news = changePage(<Noticias />);
+  // Ao clicar em "Área Administrativa", verifica se já está logado
+  defaultHandler.login = (e) => {
+    e.preventDefault();
+    const usuario = localStorage.getItem("usuario");
+    const temCookie = document.cookie
+      .split("; ")
+      .some((row) => row.startsWith("sessaoAdmin=true"));
+    const sessaoValida = usuario && temCookie;
+
+    setPagina(sessaoValida ? "admin" : "login");
+    toggleMenu();
+  };
 
   // Adiciona os handler ao objeto que representa as opções do Menu
   addHandlers(options, defaultHandler);
@@ -140,7 +155,19 @@ function App() {
         }
       />
 
-      <main className="container-lg">{pagina}</main>
+      <main className="container-lg">
+        {pagina === "login" ? (
+          <Login setPagina={setPagina} />
+        ) : pagina === "admin" ? (
+          <Admin setPagina={setPagina} />
+        ) : pagina === "home" ? (
+          home
+        ) : (
+          pagina
+        )}
+      </main>
+
+      <CookieBanner />
     </>
   );
 }
