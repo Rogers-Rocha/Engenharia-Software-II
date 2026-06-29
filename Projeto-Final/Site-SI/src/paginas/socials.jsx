@@ -1,49 +1,28 @@
+import { useColecao } from "../firebase/useColecao.js"; // Ajuste o caminho do import se necessário
 import "../App.css";
 import "../css-classes/socials.css";
 
 import { FaDiscord } from "react-icons/fa";
 
-// Mock dos links das redes sociais
-const socialLinks = [
-  {
-    id: "whatsapp",
-    name: "Grupo Geral",
-    icon: "fab fa-whatsapp",
-    description: "Grupo oficial do curso de Sistemas de Informação",
-    url: "https://chat.whatsapp.com/IwZJ4Yv9xmL9ITF9iis1BP",
-    color: "#25D366",
-  },
-  {
-    id: "discord",
-    name: "Discord",
-    icon: "fab fa-discord",
-    iconComponent: FaDiscord,
-    description: "Servidor do Discord da comunidade de S.I.",
-    url: "https://discord.gg/",
-    color: "#5865F2",
-  },
-  {
-    id: "instagram-ru",
-    name: "Instagram Restaurante Universitário",
-    icon: "fab fa-instagram",
-    description: "Restaurante Universitário da UFPI",
-    url: "https://www.instagram.com/ruufpicshnb?igsh=MTh5d2w3ZTNucjl1Mg==",
-    color: "#E4405F",
-  },
-  {
-    id: "instagram-si",
-    name: "Instagram do curso de S.I.",
-    icon: "fab fa-instagram",
-    description: "Instagram oficial do curso de S.I",
-    url: "https://www.instagram.com/si.ufpi?igsh=aHcxcTZ6aW1mZW02",
-    color: "#E4405F",
-  },
-];
-
-// Ordem de exibição: [0, 2, 1, 3] -> 1 3 / 2 4
-const ordemExibicao = [0, 2, 1, 3];
+// Ordem de exibição desejada baseada no ID do documento do banco
+const ordemDesejada = ["whatsapp", "instagram-ru", "discord", "instagram-si"];
 
 function Socials() {
+  const { dados: socialLinks, carregando, erro } = useColecao("socials");
+
+  if (carregando) {
+    return <div className="loading">Carregando redes sociais...</div>;
+  }
+
+  if (erro) {
+    return <div className="error">Erro ao carregar dados: {erro}</div>;
+  }
+
+  // Ordena os dados vindos do Firebase seguindo a lista 'ordemDesejada'
+  const linksOrdenados = [...socialLinks].sort((a, b) => {
+    return ordemDesejada.indexOf(a.id) - ordemDesejada.indexOf(b.id);
+  });
+
   return (
     <div className="socials-page">
       <div className="socials-header">
@@ -54,14 +33,17 @@ function Socials() {
       </div>
 
       <div className="socials-grid">
-        {ordemExibicao.map((index) => {
-          const link = socialLinks[index];
-
-          // Discord usa SVG do react-icons; demais usam Font Awesome
+        {linksOrdenados.map((link) => {
+          
+          // Renderiza dinamicamente: se for Discord usa o SVG, se não, usa Font Awesome
           const renderIcon = () => {
-            if (link.iconComponent) {
-              const IconComponent = link.iconComponent;
-              return <IconComponent className="social-icon social-icon-svg" style={{ color: link.color }} />;
+            if (link.icon === "fab fa-discord" || link.id === "discord") {
+              return (
+                <FaDiscord 
+                  className="social-icon social-icon-svg" 
+                  style={{ color: link.color }} 
+                />
+              );
             }
             return (
               <i
