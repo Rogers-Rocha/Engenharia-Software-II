@@ -10,7 +10,11 @@ const Item = ({ item }) => {
 
   return (
     <div className="item">
-      <img src={item.foto} alt={item.prof} className="foto-professor" />
+      <img
+        src={item.foto || "semfoto.jpg"}
+        alt={item.prof}
+        className="foto-professor"
+      />
 
       <div className="conteudo">
         <p className="nome">{item.prof}</p>
