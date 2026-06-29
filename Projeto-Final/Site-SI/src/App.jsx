@@ -30,9 +30,9 @@ function App() {
   // Evita renderizar qualquer página antes de saber se há sessão ativa
   const [verificando, setVerificando] = useState(true);
 
-  // Agora pagina é sempre uma string 
+  // Agora pagina é sempre uma string
   const [pagina, setPagina] = useState(() => {
-    return localStorage.getItem("paginaAtual") || "home";
+    return sessionStorage.getItem("paginaAtual") || "home";
   });
 
   // ── Verifica sessão do Firebase ao iniciar ──────────────────────────────
@@ -45,7 +45,7 @@ function App() {
           JSON.stringify({
             nome: usuarioFirebase.displayName || "Administrador",
             email: usuarioFirebase.email,
-          })
+          }),
         );
         setPagina("admin");
       } else {
@@ -65,11 +65,13 @@ function App() {
   useEffect(() => {
     // Evita salvar "login" ou "admin" se preferir que o F5 neles tenha comportamento diferente,
     // mas no geral, salvar a string direta resolve:
-    localStorage.setItem("paginaAtual", pagina);
+    sessionStorage.setItem("paginaAtual", pagina);
   }, [pagina]);
 
-  const toggleMenu = () => { // Alterna o estado do Menu
-    if (menuIsOpen) { // Fecha todo os folders abertos quando o menu for fechado
+  const toggleMenu = () => {
+    // Alterna o estado do Menu
+    if (menuIsOpen) {
+      // Fecha todo os folders abertos quando o menu for fechado
       const pastasAbertas = document.querySelectorAll(".menu-folder.active");
       pastasAbertas.forEach((pasta) => {
         pasta.classList.remove("active");
@@ -88,7 +90,9 @@ function App() {
   const changePage = (nomePagina) => (e) => {
     e.preventDefault();
     setPagina(nomePagina);
-    toggleMenu();
+    if (menuIsOpen) {
+      toggleMenu();
+    }
   };
 
   function defaultHandler(e) {
@@ -96,7 +100,8 @@ function App() {
     toggleMenu();
   }
 
-  atalhos.value = [ // Array contendo os atalhos da página home
+  atalhos.value = [
+    // Array contendo os atalhos da página home
     {
       name: options.events.name,
       handler: changePage("eventos"),
@@ -125,17 +130,17 @@ function App() {
 
   // Associa handlers específicos com a chave equivalente da página (ex: defaultHandler.home = ...)
   // Caso o handler não seja fornecido, usa o defaultHandler (fallback)
-  defaultHandler.home     = changePage("home");
-  defaultHandler.socials  = changePage("socials");
-  defaultHandler.profs    = changePage("professores");
-  defaultHandler.coord    = changePage("coordenacao");
-  defaultHandler.labs     = changePage("laboratorios");
-  defaultHandler.books    = changePage("livros");
-  defaultHandler.sites    = changePage("sites");
-  defaultHandler.events   = changePage("eventos");
-  defaultHandler.news     = changePage("noticias");
+  defaultHandler.home = changePage("home");
+  defaultHandler.socials = changePage("socials");
+  defaultHandler.profs = changePage("professores");
+  defaultHandler.coord = changePage("coordenacao");
+  defaultHandler.labs = changePage("laboratorios");
+  defaultHandler.books = changePage("livros");
+  defaultHandler.sites = changePage("sites");
+  defaultHandler.events = changePage("eventos");
+  defaultHandler.news = changePage("noticias");
 
-  // ── Handler do login agora consulta só o Firebase 
+  // ── Handler do login agora consulta só o Firebase
   // Ao clicar em "Área Administrativa", verifica se já está logado
   defaultHandler.login = (e) => {
     e.preventDefault();
@@ -151,21 +156,33 @@ function App() {
   const tempPesquisa = (inputPesquisa) =>
     alert(`Pesquisando ${inputPesquisa}...`);
 
-  // ── Renderização das páginas por nome (string) 
+  // ── Renderização das páginas por nome (string)
   const renderPagina = () => {
     switch (pagina) {
-      case "home":         return home;
-      case "socials":      return <Socials />;
-      case "professores":  return <Professores />;
-      case "coordenacao":  return <Coordenacao />;
-      case "laboratorios": return <Laboratorios />;
-      case "livros":       return <Livros />;
-      case "sites":        return <Sites />;
-      case "eventos":      return <Eventos />;
-      case "noticias":     return <Noticias />;
-      case "login":        return <Login setPagina={setPagina} />;
-      case "admin":        return <Admin setPagina={setPagina} />;
-      default:             return home;
+      case "home":
+        return home;
+      case "socials":
+        return <Socials />;
+      case "professores":
+        return <Professores />;
+      case "coordenacao":
+        return <Coordenacao />;
+      case "laboratorios":
+        return <Laboratorios />;
+      case "livros":
+        return <Livros />;
+      case "sites":
+        return <Sites />;
+      case "eventos":
+        return <Eventos />;
+      case "noticias":
+        return <Noticias />;
+      case "login":
+        return <Login setPagina={setPagina} />;
+      case "admin":
+        return <Admin setPagina={setPagina} />;
+      default:
+        return home;
     }
   };
 
@@ -191,9 +208,7 @@ function App() {
         }
       />
 
-      <main className="container-lg">
-        {renderPagina()}
-      </main>
+      <main className="container-lg">{renderPagina()}</main>
 
       <CookieBanner />
     </>
