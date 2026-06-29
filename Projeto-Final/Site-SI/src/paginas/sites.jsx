@@ -31,7 +31,7 @@ function Sites() {
 
           <div className="sites-grid">
             {secao.sites.map((site) => (
-              
+              <a
                 key={site.id}
                 href={site.link}
                 target="_blank"

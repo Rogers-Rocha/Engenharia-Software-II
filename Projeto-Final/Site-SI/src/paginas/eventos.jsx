@@ -65,7 +65,7 @@ function Eventos() {
               </div>
 
               <div className="evento-footer">
-                
+                <a
                   href={evento.linkInscricao}
                   target="_blank"
                   rel="noopener noreferrer"

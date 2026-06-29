@@ -32,7 +32,7 @@ function Noticias() {
           const dataFormatada = formatarData(noticia.dataPublicacao.toDate());
 
           return (
-            
+            <a
               key={noticia.id}
               href={noticia.link}
               target="_blank"

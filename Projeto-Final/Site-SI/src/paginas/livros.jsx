@@ -25,7 +25,7 @@ function Livros() {
 
           <div className="livros-grid">
             {secao.livros.map((livro) => (
-              
+              <a
                 key={livro.id}
                 href={livro.link}
                 target="_blank"
