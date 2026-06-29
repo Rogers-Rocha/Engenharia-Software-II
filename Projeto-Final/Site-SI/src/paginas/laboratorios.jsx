@@ -1,39 +1,17 @@
-import { useState } from "react";
-
+// src/paginas/laboratorios.jsx
 import "../App.css";
 import "../css-classes/laboratorios.css";
 
 import Item from "../componentes/itemLab.jsx";
-
-// Mock de dados dos laboratórios
-const items = [
-  {
-    id: 1,
-    nome: "Laboratório 1",
-    status: "Laboratório Disponível",
-    localizacao: "Localização: sala 813",
-  },
-  {
-    id: 2,
-    nome: "Laboratório 2",
-    status: "Laboratório Indisponível",
-    localizacao: "Localização: sala 814",
-  },
-  {
-    id: 3,
-    nome: "PASID",
-    status: "Laboratório Disponível",
-    localizacao: "Localização: Primeira sala à esquerda no bloco de enfermagem",
-  },
-  {
-    id: 4,
-    nome: "PAAD",
-    status: "Laboratório Disponível",
-    localizacao: "Localização: Segunda sala no bloco de enfermagem",
-  },
-];
+import { useColecao } from "../firebase/useColecao.js";
+import { Carregando, ErroCarregamento } from "../componentes/estadoPagina.jsx";
 
 function Laboratorios() {
+  const { dados, carregando, erro } = useColecao("laboratorios", "nome");
+
+  if (carregando) return <Carregando mensagem="Carregando laboratórios..." />;
+  if (erro)       return <ErroCarregamento />;
+
   return (
     <div className="laboratorios">
       <h2>Lista de laboratórios</h2>
@@ -53,7 +31,7 @@ function Laboratorios() {
       </div>
 
       <div className="item-lista">
-        {items.map((item) => (
+        {dados.map((item) => (
           <Item key={item.id} item={item} />
         ))}
       </div>

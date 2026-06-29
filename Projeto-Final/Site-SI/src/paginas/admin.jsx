@@ -1,19 +1,16 @@
 // src/paginas/admin.jsx
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../firebase/firebase";
+import { auth } from "../firebase/firebase.js";
 
 import "../App.css";
 import "../css-classes/admin.css";
 
 function Admin({ setPagina }) {
-  const [usuario, setUsuario] = useState(null);
+  const [usuario,    setUsuario]    = useState(null);
   const [verificando, setVerificando] = useState(true);
 
   useEffect(() => {
-    // onAuthStateChanged é um listener do Firebase:
-    // dispara imediatamente com o usuário atual (ou null se não logado)
-    // e continua ouvindo mudanças de sessão
     const cancelarListener = onAuthStateChanged(auth, (usuarioFirebase) => {
       if (usuarioFirebase) {
         setUsuario({
@@ -21,14 +18,11 @@ function Admin({ setPagina }) {
           email: usuarioFirebase.email,
         });
       } else {
-        // Sem sessão ativa → redireciona para login
         localStorage.removeItem("usuario");
         setPagina("login");
       }
       setVerificando(false);
     });
-
-    // Cancela o listener quando o componente desmonta
     return () => cancelarListener();
   }, [setPagina]);
 
@@ -38,7 +32,6 @@ function Admin({ setPagina }) {
     setPagina("login");
   };
 
-  // Enquanto o Firebase verifica a sessão, não renderiza nada
   if (verificando) return null;
   if (!usuario)    return null;
 
