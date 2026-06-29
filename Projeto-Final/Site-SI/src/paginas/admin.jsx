@@ -209,6 +209,7 @@ function Admin({ setPagina }) {
     "livros",
     "coordenacao",
     "sites",
+    "socials",
   ];
 
   useEffect(() => {

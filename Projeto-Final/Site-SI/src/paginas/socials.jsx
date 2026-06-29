@@ -4,11 +4,8 @@ import "../css-classes/socials.css";
 
 import { FaDiscord } from "react-icons/fa";
 
-// Ordem de exibição desejada baseada no ID do documento do banco
-const ordemDesejada = ["whatsapp", "instagram-ru", "discord", "instagram-si"];
-
 function Socials() {
-  const { dados: socialLinks, carregando, erro } = useColecao("socials");
+  const { dados, carregando, erro } = useColecao("socials");
 
   if (carregando) {
     return <div className="loading">Carregando redes sociais...</div>;
@@ -17,11 +14,6 @@ function Socials() {
   if (erro) {
     return <div className="error">Erro ao carregar dados: {erro}</div>;
   }
-
-  // Ordena os dados vindos do Firebase seguindo a lista 'ordemDesejada'
-  const linksOrdenados = [...socialLinks].sort((a, b) => {
-    return ordemDesejada.indexOf(a.id) - ordemDesejada.indexOf(b.id);
-  });
 
   return (
     <div className="socials-page">
@@ -33,15 +25,14 @@ function Socials() {
       </div>
 
       <div className="socials-grid">
-        {linksOrdenados.map((link) => {
-          
+        {dados.map((link) => {
           // Renderiza dinamicamente: se for Discord usa o SVG, se não, usa Font Awesome
           const renderIcon = () => {
             if (link.icon === "fab fa-discord" || link.id === "discord") {
               return (
-                <FaDiscord 
-                  className="social-icon social-icon-svg" 
-                  style={{ color: link.color }} 
+                <FaDiscord
+                  className="social-icon social-icon-svg"
+                  style={{ color: link.color }}
                 />
               );
             }
