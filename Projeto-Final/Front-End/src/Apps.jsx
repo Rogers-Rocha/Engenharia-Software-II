@@ -30,10 +30,8 @@ function App() {
   // Evita renderizar qualquer página antes de saber se há sessão ativa
   const [verificando, setVerificando] = useState(true);
 
-  // Agora pagina é sempre uma string 
-  const [pagina, setPagina] = useState(() => {
-    return localStorage.getItem("paginaAtual") || "home";
-  });
+  // Agora pagina é sempre uma string — sem JSX misturado
+  const [pagina, setPagina] = useState("home");
 
   // ── Verifica sessão do Firebase ao iniciar ──────────────────────────────
   useEffect(() => {
@@ -61,12 +59,6 @@ function App() {
 
     return () => cancelarListener();
   }, []);
-
-  useEffect(() => {
-    // Evita salvar "login" ou "admin" se preferir que o F5 neles tenha comportamento diferente,
-    // mas no geral, salvar a string direta resolve:
-    localStorage.setItem("paginaAtual", pagina);
-  }, [pagina]);
 
   const toggleMenu = () => { // Alterna o estado do Menu
     if (menuIsOpen) { // Fecha todo os folders abertos quando o menu for fechado

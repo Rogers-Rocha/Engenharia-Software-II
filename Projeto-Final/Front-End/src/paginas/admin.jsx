@@ -1,39 +1,46 @@
-import { useEffect } from "react";
+// src/paginas/admin.jsx
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 import "../App.css";
 import "../css-classes/admin.css";
 
-// Verifica se o cookie de sessão existe
-const temCookieSessao = () =>
-  document.cookie
-    .split("; ")
-    .some((row) => row.startsWith("sessaoAdmin=true"));
-
 function Admin({ setPagina }) {
-  // Obtém os dados do usuário do localStorage
-  const usuarioStr = localStorage.getItem("usuario");
-  const usuario = usuarioStr ? JSON.parse(usuarioStr) : null;
+  const [usuario, setUsuario] = useState(null);
+  const [verificando, setVerificando] = useState(true);
 
-  const sessaoValida = usuario && temCookieSessao();
-
-  // Se não houver sessão válida, limpa e redireciona para o login
   useEffect(() => {
-    if (!sessaoValida) {
-      localStorage.removeItem("usuario");
-      setPagina("login");
-    }
-  }, [sessaoValida, setPagina]);
+    // onAuthStateChanged é um listener do Firebase:
+    // dispara imediatamente com o usuário atual (ou null se não logado)
+    // e continua ouvindo mudanças de sessão
+    const cancelarListener = onAuthStateChanged(auth, (usuarioFirebase) => {
+      if (usuarioFirebase) {
+        setUsuario({
+          nome:  usuarioFirebase.displayName || "Administrador",
+          email: usuarioFirebase.email,
+        });
+      } else {
+        // Sem sessão ativa → redireciona para login
+        localStorage.removeItem("usuario");
+        setPagina("login");
+      }
+      setVerificando(false);
+    });
 
-  // Enquanto redireciona, não renderiza nada
-  if (!sessaoValida) return null;
+    // Cancela o listener quando o componente desmonta
+    return () => cancelarListener();
+  }, [setPagina]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut(auth);
     localStorage.removeItem("usuario");
-    // Apaga o cookie de sessão
-    document.cookie =
-      "sessaoAdmin=; max-age=0; path=/; SameSite=Lax";
     setPagina("login");
   };
+
+  // Enquanto o Firebase verifica a sessão, não renderiza nada
+  if (verificando) return null;
+  if (!usuario)    return null;
 
   return (
     <div className="admin-page">
@@ -44,20 +51,21 @@ function Admin({ setPagina }) {
         </div>
 
         <div className="admin-info-item">
-            <span className="admin-info-label">Nome</span>
-            <span className="admin-info-value">{usuario.nome}</span>
-          </div>
-
-          <div className="admin-info-item">
-            <span className="admin-info-label">E-mail</span>
-            <span className="admin-info-value">{usuario.email}</span>
-          </div>
-          <button className="admin-btn-sair" onClick={handleLogout}>
-            <i className="fas fa-sign-out-alt"></i>
-            Sair
-          </button>
+          <span className="admin-info-label">Nome</span>
+          <span className="admin-info-value">{usuario.nome}</span>
         </div>
+
+        <div className="admin-info-item">
+          <span className="admin-info-label">E-mail</span>
+          <span className="admin-info-value">{usuario.email}</span>
+        </div>
+
+        <button className="admin-btn-sair" onClick={handleLogout}>
+          <i className="fas fa-sign-out-alt"></i>
+          Sair
+        </button>
       </div>
+    </div>
   );
 }
 

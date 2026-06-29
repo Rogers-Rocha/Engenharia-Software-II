@@ -1,45 +1,22 @@
+// src/paginas/login.jsx
 import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 import "../css-classes/login.css";
 
 const MAX_TENTATIVAS = 3;
-const TEMPO_BLOQUEIO_MS = 1 * 60 * 1000; // 1 minuto
+const TEMPO_BLOQUEIO_MS = 1 * 60 * 1000;
 const STORAGE_KEY_TENTATIVAS = "loginTentativas";
 
 function Login({ setPagina }) {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
+  const [email, setEmail]               = useState("");
+  const [senha, setSenha]               = useState("");
+  const [erro, setErro]                 = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [carregando, setCarregando]     = useState(false);
 
-  // Gera hash PBKDF2 com salt usando Web Crypto API
-  const gerarHashPBKDF2 = async (senha, salt) => {
-    const encoder = new TextEncoder();
-    const keyMaterial = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(senha),
-      "PBKDF2",
-      false,
-      ["deriveBits"],
-    );
-    const derivedBits = await crypto.subtle.deriveBits(
-      {
-        name: "PBKDF2",
-        salt: encoder.encode(salt),
-        iterations: 100000,
-        hash: "SHA-256",
-      },
-      keyMaterial,
-      256,
-    );
-    const hashArray = Array.from(new Uint8Array(derivedBits));
-
-    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-  };
-  
-  gerarHashPBKDF2("noletudo", "ufpi-admin-2026").then(console.log);
-
-  // Consulta estado do bloqueio por tentativas
+  // ─── Bloqueio por tentativas ──────────────────────────────
   const verificarBloqueio = () => {
     const stored = localStorage.getItem(STORAGE_KEY_TENTATIVAS);
     if (!stored) return null;
@@ -57,17 +34,14 @@ function Login({ setPagina }) {
           mensagem: `Muitas tentativas. Tente novamente em ${minutosRestantes} minuto(s).`,
         };
       }
-      // Reseta após o tempo de bloqueio
       localStorage.removeItem(STORAGE_KEY_TENTATIVAS);
     }
-
-    return { bloqueado: false, tentativasRestantes: MAX_TENTATIVAS - count };
+    return { bloqueado: false };
   };
 
-  // Registra uma tentativa falha
   const registrarTentativaFalha = () => {
     const stored = localStorage.getItem(STORAGE_KEY_TENTATIVAS);
-    const agora = Date.now();
+    const agora  = Date.now();
 
     if (!stored) {
       localStorage.setItem(
@@ -76,7 +50,6 @@ function Login({ setPagina }) {
       );
     } else {
       const dados = JSON.parse(stored);
-      // Se passou do tempo de bloqueio, reseta contagem
       if (agora - dados.primeiroBloqueio >= TEMPO_BLOQUEIO_MS) {
         localStorage.setItem(
           STORAGE_KEY_TENTATIVAS,
@@ -84,27 +57,20 @@ function Login({ setPagina }) {
         );
       } else {
         dados.count += 1;
-        localStorage.setItem(
-          STORAGE_KEY_TENTATIVAS,
-          JSON.stringify(dados),
-        );
+        localStorage.setItem(STORAGE_KEY_TENTATIVAS, JSON.stringify(dados));
       }
     }
   };
 
-  // Limpa o registro de tentativas (login bem-sucedido)
-  const limparTentativas = () => {
-    localStorage.removeItem(STORAGE_KEY_TENTATIVAS);
-  };
+  const limparTentativas = () => localStorage.removeItem(STORAGE_KEY_TENTATIVAS);
 
-  // Valida o formato do e-mail (regex simples)
   const emailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  // ─── Submit ───────────────────────────────────────────────────────────────
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro("");
 
-    // Verifica bloqueio antes de qualquer validação
     const bloqueio = verificarBloqueio();
     if (bloqueio?.bloqueado) {
       setErro(bloqueio.mensagem);
@@ -113,69 +79,54 @@ function Login({ setPagina }) {
 
     const emailLimpo = email.trim();
 
-    // Validação: campos vazios
     if (!emailLimpo || !senha.trim()) {
       setErro("Preencha todos os campos.");
       return;
     }
 
-    // Validação: formato de e-mail
     if (!emailValido(emailLimpo)) {
       setErro("Insira um e-mail válido.");
       return;
     }
 
+    setCarregando(true);
+
     try {
-      const resposta = await fetch("/dados/usuarios.json");
+      // Firebase cuida do hash, salt e validação 
+      const credencial = await signInWithEmailAndPassword(auth, emailLimpo, senha);
+      const usuario    = credencial.user;
 
-      if (!resposta.ok) {
-        setErro("Erro ao carregar dados de usuários.");
-        return;
-      }
+      limparTentativas();
 
-      const usuarios = await resposta.json();
-
-      // Procura o usuário pelo email
-      const usuarioEncontrado = usuarios.find(
-        (u) => u.email === emailLimpo,
+      // Salva dados mínimos no localStorage para o admin.jsx exibir
+      localStorage.setItem(
+        "usuario",
+        JSON.stringify({ nome: usuario.displayName || "Administrador", email: usuario.email }),
       );
 
-      if (usuarioEncontrado) {
-        // Gera hash PBKDF2 com o salt do usuário
-        const senhaHash = await gerarHashPBKDF2(
-          senha,
-          usuarioEncontrado.salt,
-        );
+      setPagina("admin");
 
-        if (senhaHash === usuarioEncontrado.senhaHash) {
-          // Login bem-sucedido — limpa tentativas e salva sessão
-          limparTentativas();
+    } catch (error) {
+      // Códigos de erro do Firebase Auth
+      const errosConhecidos = [
+        "auth/user-not-found",
+        "auth/wrong-password",
+        "auth/invalid-credential",
+        "auth/invalid-email",
+      ];
 
-          localStorage.setItem(
-            "usuario",
-            JSON.stringify({
-              nome: usuarioEncontrado.nome,
-              email: usuarioEncontrado.email,
-            }),
-          );
-
-          // Cookie de sessão (expira em 1 hora)
-          document.cookie =
-            "sessaoAdmin=true; max-age=3600; path=/; SameSite=Lax";
-
-          setPagina("admin");
-          return;
-        }
+      if (errosConhecidos.includes(error.code)) {
+        registrarTentativaFalha();
+        setErro("E-mail ou senha inválidos.");
+      } else {
+        setErro("Erro de conexão. Tente novamente.");
       }
-
-      // Credencial inválida — registra tentativa falha
-      registrarTentativaFalha();
-      setErro("E-mail ou senha inválidos.");
-    } catch {
-      setErro("Erro de conexão. Tente novamente.");
+    } finally {
+      setCarregando(false);
     }
   };
 
+  // ─── JSX ─────────
   return (
     <div className="login-page">
       <div className="login-card">
@@ -197,6 +148,8 @@ function Login({ setPagina }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoFocus
+                disabled={carregando}
+                autoComplete="username"
               />
             </div>
           </div>
@@ -211,6 +164,8 @@ function Login({ setPagina }) {
                 placeholder="Sua senha"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
+                disabled={carregando}
+                autoComplete="new-password"
               />
               <button
                 type="button"
@@ -219,9 +174,7 @@ function Login({ setPagina }) {
                 aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
                 tabIndex={-1}
               >
-                <i
-                  className={`fas ${mostrarSenha ? "fa-eye" : "fa-eye-slash"}`}
-                ></i>
+                <i className={`fas ${mostrarSenha ? "fa-eye" : "fa-eye-slash"}`}></i>
               </button>
             </div>
           </div>
@@ -233,9 +186,11 @@ function Login({ setPagina }) {
             </div>
           )}
 
-          <button type="submit" className="login-btn">
-            <i className="fas fa-sign-in-alt"></i>
-            Entrar
+          <button type="submit" className="login-btn" disabled={carregando}>
+            {carregando
+              ? <><i className="fas fa-spinner fa-spin"></i> Entrando...</>
+              : <><i className="fas fa-sign-in-alt"></i> Entrar</>
+            }
           </button>
         </form>
       </div>
