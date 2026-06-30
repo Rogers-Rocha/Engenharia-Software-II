@@ -1,327 +1,349 @@
-import FormularioProfessor from "../componentes/formularioProfessor.jsx";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import {
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-} from "firebase/firestore";
-import { auth, db } from "../firebase/firebase.js";
-import { useColecao } from "../firebase/useColecao.js";
-import { obterSchema } from "../firebase/schemasColecao.js";
-import { textoParaListaObjetos } from "../componentes/conversoresTexto.js";
-import CampoFormulario from "../componentes/CampoFormulario.jsx";
-
-import "../App.css";
+import { useState, useEffect } from "react";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, Timestamp } from "firebase/firestore";
+import { signOut } from "firebase/auth";
+import { db, auth } from "../firebase/firebase";
 import "../css-classes/admin.css";
 
-// --- Subcomponente: Formulário Dinâmico ---
-// Responsabilidade: dado o schema de uma coleção, renderizar os campos NA
-// ORDEM definida no schema, manter o estado do formulário e, no submit,
-// converter os campos "lista-texto" de volta para array de objetos antes
-// de entregar ao componente pai (que sabe falar com o Firestore).
-function FormularioDinamico({ modo, schema, itemEditar, proximoId, aoSalvar, aoCancelar, loading }) {
-  const [campos, setCampos] = useState({});
+import AdminCard from "../componentes/adminCard";
+import AdminModal from "../componentes/adminModal";
 
-  useEffect(() => {
-    if (modo === "editar" && itemEditar) {
-      setCampos(itemEditar);
+const colecoesDisponiveis = ["noticias", "eventos", "professores", "laboratorios", "livros", "socials", "sites", "coordenacao"];
+
+const isImg = (k) => ["foto", "imagem"].some((x) => k.toLowerCase().includes(x));
+
+const getType = (v, k = "") =>
+  v?.seconds !== undefined ||
+  (typeof v === "string" && (k.toLowerCase().includes("data") || (!isNaN(Date.parse(v)) && v.includes("-") && v.length >= 10)))
+    ? "date"
+    : Array.isArray(v)
+      ? "array"
+      : typeof v;
+
+export const formatLabel = (s) => {
+  const words = s
+    .replace(/([A-Z])/g, " $1")
+    .trim()
+    .split(/\s+/);
+  return words
+    .map((w) => {
+      const p = w.toLowerCase().replace(/cao/g, "ção");
+      return p.charAt(0).toUpperCase() + p.slice(1);
+    })
+    .join(" de ");
+};
+
+const formatDate = (v, isInput = false) => {
+  if (!v) return "";
+  const d = new Date(v.seconds ? v.seconds * 1000 : v);
+  return isInput ? d.toISOString().split("T")[0] : d.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+};
+
+const getWeight = (k, type) => {
+  const kl = k.toLowerCase();
+  if (kl === "nome" || kl === "titulo") return 1;
+  if (isImg(kl)) return 2;
+  if (type === "array") return 5;
+  if (type === "date") return 4;
+  return 3;
+};
+
+const getLayout = (keys) => {
+  const lay = [],
+    skip = new Set();
+  keys.forEach((c) => {
+    if (skip.has(c)) return;
+    const mIni = c.match(/^(.*)(Inicio|Início)$/),
+      mFim = c.match(/^(.*)Fim$/);
+    const parFim = mIni && keys.find((x) => x === `${mIni[1]}Fim`);
+    const parIni = mFim && keys.find((x) => x === `${mFim[1]}Inicio` || x === `${mFim[1]}Início`);
+
+    if (parFim) {
+      lay.push({ type: "paired", base: mIni[1], inicio: c, fim: parFim });
+      skip.add(c).add(parFim);
+    } else if (parIni) {
+      lay.push({ type: "paired", base: mFim[1], inicio: parIni, fim: c });
+      skip.add(c).add(parIni);
     } else {
-      // Modo criar: monta um objeto vazio com todas as chaves do schema,
-      // já com o próximo ID sugerido
-      const estruturaBase = {};
-      schema.campos.forEach((def) => {
-        if (def.tipo === "id-numerico") {
-          estruturaBase[def.chave] = proximoId;
-        } else if (def.tipo === "lista-texto") {
-          estruturaBase[def.chave] = []; // array vazio até o usuário digitar
-        } else {
-          estruturaBase[def.chave] = "";
+      lay.push({ type: "single", campo: c });
+      skip.add(c);
+    }
+  });
+  return lay;
+};
+
+export default function Admin({ setPagina }) {
+  const [colecaoAtual, setColecaoAtual] = useState(colecoesDisponiveis[0]);
+  const [documentos, setDocumentos] = useState([]);
+  const [carregando, setCarregando] = useState(false);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [docEditando, setDocEditando] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [schema, setSchema] = useState({
+    raiz: {},
+    sub: {},
+    layout: [],
+    layoutSub: {},
+    ordemSub: {},
+  });
+
+  const carregarDados = async () => {
+    setCarregando(true);
+    const snap = await getDocs(collection(db, colecaoAtual));
+    const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    setDocumentos(docs);
+
+    let ord = [],
+      mapSub = {},
+      tipSub = {},
+      esq = {};
+    if (docs.length > 0) {
+      ord = Object.keys(docs[0]).filter((k) => k !== "id");
+      ord.forEach((k) => {
+        if (Array.isArray(docs[0][k]) && docs[0][k][0]) {
+          mapSub[k] = Object.keys(docs[0][k][0]).filter((s) => s !== "id");
+          tipSub[k] = {};
+          mapSub[k].forEach((s) => (tipSub[k][s] = getType(docs[0][k][0][s], s)));
         }
       });
-      setCampos(estruturaBase);
     }
-  }, [modo, itemEditar, proximoId, schema]);
 
-  const handleMudarCampo = (chave, valor) => {
-    setCampos((prev) => ({ ...prev, [chave]: valor }));
+    docs.forEach((d) =>
+      Object.keys(d)
+        .filter((k) => k !== "id")
+        .forEach((k) => {
+          if (!esq[k]) {
+            esq[k] = getType(d[k], k);
+            if (!ord.includes(k)) ord.push(k);
+          }
+          if (esq[k] === "array" && !mapSub[k] && d[k][0]) {
+            mapSub[k] = Object.keys(d[k][0]).filter((s) => s !== "id");
+            tipSub[k] = {};
+            mapSub[k].forEach((s) => (tipSub[k][s] = getType(d[k][0][s], s)));
+          }
+        }),
+    );
+
+    ord.sort((a, b) => {
+      const wa = getWeight(a, esq[a]),
+        wb = getWeight(b, esq[b]);
+      return wa !== wb ? wa - wb : a.localeCompare(b);
+    });
+
+    const layoutSub = {};
+    Object.keys(mapSub).forEach((k) => {
+      mapSub[k].sort((a, b) => {
+        const wa = getWeight(a, tipSub[k][a]),
+          wb = getWeight(b, tipSub[k][b]);
+        return wa !== wb ? wa - wb : a.localeCompare(b);
+      });
+      layoutSub[k] = getLayout(mapSub[k]);
+    });
+
+    setSchema({
+      raiz: esq,
+      sub: tipSub,
+      layout: getLayout(ord),
+      layoutSub,
+      ordemSub: mapSub,
+    });
+    setCarregando(false);
   };
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    carregarDados();
+  }, [colecaoAtual]);
+
+  const abrirModal = (doc = null) => {
+    setDocEditando(doc ? doc.id : null);
+    const fd = {};
+    if (!doc) {
+      Object.entries(schema.raiz).forEach(
+        ([c, t]) =>
+          (fd[c] =
+            t === "number" ? 0 : t === "boolean" ? false : t === "array" ? [] : t === "date" ? new Date().toISOString().split("T")[0] : ""),
+      );
+    } else {
+      Object.assign(fd, doc);
+      delete fd.id;
+      Object.keys(schema.raiz).forEach((c) => {
+        if (schema.raiz[c] === "date" && fd[c]) fd[c] = formatDate(fd[c], true);
+        if (schema.raiz[c] === "array" && fd[c]) {
+          fd[c] = fd[c].map((i) => {
+            const ni = { ...i };
+            Object.keys(schema.sub[c] || {}).forEach((s) => {
+              if (schema.sub[c][s] === "date" && ni[s]) ni[s] = formatDate(ni[s], true);
+            });
+            return ni;
+          });
+        }
+      });
+    }
+    setFormData(fd);
+    setModalAberto(true);
+  };
+
+  const handleChange = (e, c, t) =>
+    setFormData({
+      ...formData,
+      [c]: t === "boolean" ? e.target.checked : t === "number" ? Number(e.target.value) : e.target.value,
+    });
+
+  const handleArrChange = (c, i, sk, val, t) => {
+    const arr = [...(formData[c] || [])];
+    arr[i][sk] = t === "number" ? Number(val) : val;
+    setFormData({ ...formData, [c]: arr });
+  };
+
+  const addArrItem = (c) => {
+    const arr = [...(formData[c] || [])],
+      obj = {};
+    (schema.ordemSub[c] || []).forEach((k) => {
+      const t = schema.sub[c]?.[k];
+      obj[k] = t === "number" ? 0 : t === "boolean" ? false : t === "date" ? new Date().toISOString().split("T")[0] : "";
+    });
+    arr.push(obj);
+    setFormData({ ...formData, [c]: arr });
+  };
+
+  const rmArrItem = (c, i) => {
+    const arr = [...(formData[c] || [])];
+    arr.splice(i, 1);
+    setFormData({ ...formData, [c]: arr });
+  };
+
+  const handleUpload = async (e, isArray = false, rootKey = "", arrIndex = 0, subKey = "") => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setCarregando(true);
+    const dataForm = new FormData();
+    dataForm.append("image", file);
+    const apiKey = "SUA_CHAVE_API_DO_IMGBB_AQUI";
+
+    const resposta = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, { method: "POST", body: dataForm });
+    const resultado = await resposta.json();
+
+    if (resultado.success) {
+      const url = resultado.data.url;
+      if (isArray) handleArrChange(rootKey, arrIndex, subKey, url, "string");
+      else handleChange({ target: { value: url } }, rootKey, "string");
+    }
+    setCarregando(false);
+  };
+
+  const salvarDoc = async (e) => {
     e.preventDefault();
 
-    // Converte todos os campos "lista-texto" (que durante a digitação ficam
-    // como texto cru) para array de objetos antes de enviar ao Firestore
-    const camposConvertidos = { ...campos };
-    schema.campos.forEach((def) => {
-      if (def.tipo === "lista-texto") {
-        const valorAtual = camposConvertidos[def.chave];
-        if (typeof valorAtual === "string") {
-          camposConvertidos[def.chave] = textoParaListaObjetos(valorAtual, def.subcampos);
+    for (const k of Object.keys(schema.raiz)) {
+      const v = formData[k],
+        t = schema.raiz[k];
+      if (t !== "array" && !isImg(k) && (v === "" || v === null || v === undefined)) {
+        return alert(`O campo "${formatLabel(k)}" não pode estar vazio.`);
+      }
+      if (t === "array" && Array.isArray(v)) {
+        for (let i = 0; i < v.length; i++) {
+          for (const sk of Object.keys(schema.sub[k] || {})) {
+            const sv = v[i][sk],
+              st = schema.sub[k][sk];
+            if (st !== "array" && !isImg(sk) && (sv === "" || sv === null || sv === undefined)) {
+              return alert(`O campo "${formatLabel(sk)}" no item ${i + 1} de "${formatLabel(k)}" não pode estar vazio.`);
+            }
+          }
         }
+      }
+    }
+
+    setCarregando(true);
+    const dados = { ...formData };
+    Object.keys(schema.raiz).forEach((c) => {
+      if (schema.raiz[c] === "date" && dados[c]) dados[c] = Timestamp.fromDate(new Date(dados[c] + "T00:00:00"));
+      if (schema.raiz[c] === "array" && dados[c]) {
+        dados[c] = dados[c].map((i) => {
+          const ni = { ...i };
+          Object.keys(schema.sub[c] || {}).forEach((s) => {
+            if (schema.sub[c][s] === "date" && ni[s]) ni[s] = Timestamp.fromDate(new Date(ni[s] + "T00:00:00"));
+          });
+          return ni;
+        });
       }
     });
 
-    aoSalvar(camposConvertidos);
+    if (docEditando) await updateDoc(doc(db, colecaoAtual, docEditando), dados);
+    else await addDoc(collection(db, colecaoAtual), dados);
+
+    alert("Salvo com sucesso!");
+    setModalAberto(false);
+    carregarDados();
+    setCarregando(false);
+  };
+
+  const deletarDocumento = async (id) => {
+    if (!window.confirm("Tem certeza que deseja excluir?")) return;
+    setCarregando(true);
+    await deleteDoc(doc(db, colecaoAtual, id));
+    alert("Excluído!");
+    carregarDados();
+    setCarregando(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="formulario-dinamico">
-      {/* A ordem de renderização segue exatamente schema.campos, garantindo
-          que cada coleção exiba seus campos na sequência desejada */}
-      {schema.campos.map((definicaoCampo) => (
-        <CampoFormulario
-          key={definicaoCampo.chave}
-          definicaoCampo={definicaoCampo}
-          valor={campos[definicaoCampo.chave]}
-          aoMudar={handleMudarCampo}
-          proximoId={proximoId}
-          modo={modo}
-        />
-      ))}
-
-      <div className="modal-acoes">
-        <button type="button" className="btn-cancelar" onClick={aoCancelar} disabled={loading}>
-          Cancelar
-        </button>
-        <button type="submit" className="btn-salvar" disabled={loading}>
-          {loading ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-save"></i>} Salvar
-        </button>
-      </div>
-    </form>
-  );
-}
-
-// --- Subcomponente que cuida do CRUD de uma coleção selecionada ---
-function PainelColecao({ nomeColecao }) {
-  const { dados, carregando, erro } = useColecao(nomeColecao);
-  const [itens, setItens] = useState([]);
-
-  useEffect(() => {
-    if (dados) setItens(dados);
-  }, [dados]);
-
-  const [modalAberto, setModalAberto] = useState(false);
-  const [modo, setModo] = useState("criar");
-  const [itemAtual, setItemAtual] = useState(null);
-  const [loadingAcao, setLoadingAcao] = useState(false);
-
-  const schema = obterSchema(nomeColecao);
-
-  // Calcula o próximo ID numérico sequencial
-  const obterProximoIdNumerico = () => {
-    const idsNumericos = itens.map((i) => Number(i.id)).filter((id) => !isNaN(id));
-    return idsNumericos.length > 0 ? Math.max(...idsNumericos) + 1 : 1;
-  };
-
-  const abrirModalCriar = () => {
-    setModo("criar");
-    setItemAtual(null);
-    setModalAberto(true);
-  };
-
-  const abrirModalEditar = (item) => {
-    setModo("editar");
-    setItemAtual(item);
-    setModalAberto(true);
-  };
-
-  const salvarDocumento = async (dadosFormulario) => {
-    setLoadingAcao(true);
-    try {
-      const { id, ...camposSemId } = dadosFormulario;
-
-      if (modo === "criar") {
-        if (id) {
-          await setDoc(doc(collection(db, nomeColecao), id.toString()), camposSemId);
-          setItens([...itens, { id: id.toString(), ...camposSemId }]);
-        } else {
-          const docRef = await addDoc(collection(db, nomeColecao), camposSemId);
-          setItens([...itens, { id: docRef.id, ...camposSemId }]);
-        }
-        alert("Documento criado com sucesso!");
-      } else {
-        const docRef = doc(db, nomeColecao, itemAtual.id);
-        await updateDoc(docRef, camposSemId);
-        setItens(itens.map((i) => (i.id === itemAtual.id ? { id: itemAtual.id, ...camposSemId } : i)));
-        alert("Documento atualizado com sucesso!");
-      }
-      setModalAberto(false);
-    } catch (error) {
-      alert("Erro ao salvar: " + error.message);
-    } finally {
-      setLoadingAcao(false);
-    }
-  };
-
-  const excluirDocumento = async (id) => {
-    if (!window.confirm("Tem certeza absoluta que deseja excluir este documento?")) return;
-    try {
-      await deleteDoc(doc(db, nomeColecao, id));
-      setItens(itens.filter((i) => i.id !== id));
-      alert("Documento excluído com sucesso!");
-    } catch (error) {
-      alert("Erro ao excluir documento: " + error.message);
-    }
-  };
-
-  if (carregando) return <div className="admin-loading"><i className="fas fa-spinner fa-spin"></i> Carregando...</div>;
-  if (erro) return <div className="admin-error"><i className="fas fa-exclamation-triangle"></i> Erro: {erro}</div>;
-
-  // Se a coleção não tiver schema customizado (ex: "socials", que nem existe
-  // no Firestore hoje), avisamos em vez de quebrar
-  if (!schema) {
-    return (
-      <div className="admin-error">
-        <i className="fas fa-exclamation-triangle"></i> A coleção <strong>{nomeColecao}</strong> ainda
-        não possui um formulário configurado em <code>schemasColecao.js</code>.
-      </div>
-    );
-  }
-
-  return (
-    <div className="colecao-container">
-      <div className="colecao-header">
-        <h3>Gerenciando: <span>{schema.rotuloSingular}</span></h3>
-        <button className="btn-adicionar" onClick={abrirModalCriar}>
-          <i className="fas fa-plus"></i> Novo Documento
+    <div className="admin-container">
+      <div className="admin-top-bar">
+        <h2>Painel Administrativo</h2>
+        <button className="br-button danger" onClick={() => signOut(auth).then(() => setPagina("home"))}>
+          <i className="fas fa-sign-out-alt admin-btn-icon" /> Sair
         </button>
       </div>
 
-      {itens.length === 0 ? (
-        <p className="sem-dados">Nenhum documento encontrado em <strong>{nomeColecao}</strong>.</p>
+      <div className="admin-collections-nav">
+        {colecoesDisponiveis.map((c) => (
+          <button key={c} className={`br-button ${colecaoAtual === c ? "primary" : "secondary"}`} onClick={() => setColecaoAtual(c)}>
+            {formatLabel(c)}
+          </button>
+        ))}
+      </div>
+
+      <div className="admin-section-title-bar">
+        <h3>Gerenciando: {formatLabel(colecaoAtual)}</h3>
+        <button className="br-button primary" onClick={() => abrirModal()}>
+          <i className="fas fa-plus admin-btn-icon" /> Novo
+        </button>
+      </div>
+
+      {carregando && !modalAberto ? (
+        <p>Carregando...</p>
       ) : (
-        <ul className="lista-documentos">
-          {itens.map((item) => (
-            <li key={item.id} className="documento-item">
-              <div className="documento-info">
-                <strong>ID: {item.id}</strong>
-                <pre className="documento-preview">{JSON.stringify(item, null, 2).slice(0, 120)}...</pre>
-              </div>
-              <div className="documento-acoes">
-                <button className="btn-editar" onClick={() => abrirModalEditar(item)} title="Editar">
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn-excluir" onClick={() => excluirDocumento(item.id)} title="Excluir">
-                  <i className="fas fa-trash"></i>
-                </button>
-              </div>
-            </li>
+        <div className="admin-cards-grid">
+          {documentos.map((d) => (
+            <AdminCard
+              key={d.id}
+              docItem={d}
+              schema={schema}
+              onEdit={abrirModal}
+              onDelete={deletarDocumento}
+              formatDate={formatDate}
+              formatLabel={formatLabel}
+            />
           ))}
-        </ul>
+        </div>
       )}
 
       {modalAberto && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>{modo === "criar" ? "Criar Novo Documento" : "Editar Documento"}</h3>
-
-            {/* Formulário dedicado para professores; genérico para as demais coleções */}
-            {nomeColecao === "professores" ? (
-              <FormularioProfessor
-                modo={modo}
-                itemEditar={itemAtual}
-                proximoId={obterProximoIdNumerico()}
-                aoSalvar={salvarDocumento}
-                aoCancelar={() => setModalAberto(false)}
-                loading={loadingAcao}
-              />
-            ) : (
-              <FormularioDinamico
-                modo={modo}
-                itemPrimeiro={itens[0] || null}
-                itemEditar={itemAtual}
-                proximoId={obterProximoIdNumerico()}
-                aoSalvar={salvarDocumento}
-                aoCancelar={() => setModalAberto(false)}
-                loading={loadingAcao}
-              />
-            )}
-          </div>
-        </div>
+        <AdminModal
+          docEditando={docEditando}
+          schema={schema}
+          formData={formData}
+          carregando={carregando}
+          salvarDoc={salvarDoc}
+          fecharModal={() => setModalAberto(false)}
+          handleChange={handleChange}
+          handleArrChange={handleArrChange}
+          rmArrItem={rmArrItem}
+          addArrItem={addArrItem}
+          formatLabel={formatLabel}
+          handleUpload={handleUpload}
+        />
       )}
     </div>
   );
 }
-
-// --- Componente principal da Página Admin ---
-function Admin({ setPagina }) {
-  const [usuario, setUsuario] = useState(null);
-  const [verificando, setVerificando] = useState(true);
-  const [colecaoAtual, setColecaoAtual] = useState("professores");
-
-  const colecoesDisponiveis = [
-    "professores",
-    "laboratorios",
-    "eventos",
-    "noticias",
-    "livros",
-    "coordenacao",
-    "sites",
-  ];
-
-  useEffect(() => {
-    const cancelarListener = onAuthStateChanged(auth, (usuarioFirebase) => {
-      if (usuarioFirebase) {
-        setUsuario({
-          nome: usuarioFirebase.displayName || "Administrador",
-          email: usuarioFirebase.email,
-        });
-      } else {
-        localStorage.removeItem("usuario");
-        setPagina("login");
-      }
-      setVerificando(false);
-    });
-    return () => cancelarListener();
-  }, [setPagina]);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    localStorage.removeItem("usuario");
-    setPagina("login");
-  };
-
-  if (verificando) return null;
-  if (!usuario) return null;
-
-  return (
-    <div className="admin-page-full">
-      <aside className="admin-sidebar">
-        <div className="admin-perfil">
-          <i className="fas fa-user-shield admin-icone"></i>
-          <h3>Área Admin</h3>
-          <p>{usuario.nome}</p>
-          <span>{usuario.email}</span>
-          <button className="admin-btn-sair-small" onClick={handleLogout}>
-            <i className="fas fa-sign-out-alt"></i> Sair
-          </button>
-        </div>
-
-        <nav className="admin-menu">
-          <h4>Coleções do Banco</h4>
-          <ul>
-            {colecoesDisponiveis.map((col) => (
-              <li
-                key={col}
-                className={colecaoAtual === col ? "ativo" : ""}
-                onClick={() => setColecaoAtual(col)}
-              >
-                <i className="fas fa-database"></i> {col}
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
-
-      <main className="admin-main">
-        <PainelColecao key={colecaoAtual} nomeColecao={colecaoAtual} />
-      </main>
-    </div>
-  );
-}
-
-export default Admin;
