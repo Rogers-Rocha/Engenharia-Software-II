@@ -218,7 +218,7 @@ export default function Admin({ setPagina }) {
     setCarregando(true);
     const dataForm = new FormData();
     dataForm.append("image", file);
-    const apiKey = "SUA_CHAVE_API_DO_IMGBB_AQUI";
+    const apiKey = "d14cf63e18ef0e4d484b2f7872fdfc02";
 
     const resposta = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, { method: "POST", body: dataForm });
     const resultado = await resposta.json();
