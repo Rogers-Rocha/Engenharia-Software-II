@@ -19,7 +19,7 @@ import Eventos from "./paginas/eventos.jsx";
 import Noticias from "./paginas/noticias.jsx";
 import Login from "./paginas/login.jsx";
 import Admin from "./paginas/admin.jsx";
-import CookieBanner from "./componentes/cookieBanner.jsx";
+
 
 import "./App.css";
 
@@ -207,10 +207,7 @@ function App() {
           </nav>
         }
       />
-
       <main className="container-lg">{renderPagina()}</main>
-
-      <CookieBanner />
     </>
   );
 }

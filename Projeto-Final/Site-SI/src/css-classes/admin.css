@@ -412,3 +412,73 @@
 .admin-btn-icon {
   margin-right: 0.5rem !important;
 }
+
+/* Sub-itens de listas (disciplinas e projetos) */
+.form-sub-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+/* Variante em coluna (para projetos com textarea) */
+.form-sub-item--coluna {
+  flex-direction: column;
+  border-left: 3px solid #1351b4;
+  padding-left: 12px;
+  margin-bottom: 12px;
+}
+
+.form-sub-item input,
+.form-sub-item textarea {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.form-sub-item textarea {
+  resize: vertical;
+  width: 100%;
+}
+
+.btn-remover-sub {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-remover-sub:hover {
+  background: #c0392b;
+}
+
+.btn-adicionar-sub {
+  background: none;
+  border: 1px dashed #1351b4;
+  color: #1351b4;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.btn-adicionar-sub:hover {
+  background: #eaf0fb;
+}
+
+.label-obs {
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: normal;
+}
+
+.no-board{
+  border: none;
+}
