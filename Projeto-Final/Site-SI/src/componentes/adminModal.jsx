@@ -4,16 +4,23 @@ const isImagem = (k) => ["foto", "imagem"].some((x) => k.toLowerCase().includes(
 const isIcon = (k) => k.toLowerCase().includes("icon");
 const isColor = (k) => ["cor", "color"].some((x) => k.toLowerCase() === x);
 
-const RenderInput = ({ id, tipo, val, onChange, useTextarea, onUpload }) => {
+const RenderInput = ({ id, tipo, val, onChange, useTextarea, onUpload, onRemove }) => {
   if (isImagem(id)) {
     return (
       <div className="admin-form-file-container">
         {val && <img src={val} alt="preview" className="admin-img-preview" />}
-        <label className="admin-file-label">
-          <i className="fas fa-cloud-upload-alt admin-file-label-icon" />
-          {val ? "Trocar Imagem" : "Selecionar Imagem"}
-          <input id={id} type="file" accept="image/*" onChange={onUpload} style={{ display: "none" }} />
-        </label>
+        <div className="admin-file-actions">
+          <label className="admin-file-label">
+            <i className="fas fa-cloud-upload-alt admin-file-label-icon" />
+            {val ? "Trocar Imagem" : "Selecionar Imagem"}
+            <input id={id} type="file" accept="image/*" onChange={onUpload} style={{ display: "none" }} />
+          </label>
+          {val && (
+            <button type="button" className="br-button danger small w-100" onClick={onRemove}>
+              <i className="fas fa-trash admin-btn-icon" /> Remover Foto
+            </button>
+          )}
+        </div>
       </div>
     );
   }
@@ -71,6 +78,7 @@ const AdminModalArrayItem = ({ it, idx, lo, schema, formatLabel, handleArrChange
               val={it[sub.campo]}
               onChange={(e) => handleArrChange(lo.campo, idx, sub.campo, e.target.value, schema.sub[lo.campo][sub.campo])}
               onUpload={(e) => handleUpload(e, true, lo.campo, idx, sub.campo)}
+              onRemove={() => handleArrChange(lo.campo, idx, sub.campo, "", schema.sub[lo.campo][sub.campo])}
               useTextarea={true}
             />
           </div>
@@ -195,6 +203,7 @@ export default function AdminModal({
                     onChange={(e) => handleChange(e, lo.campo, t)}
                     useTextarea={true}
                     onUpload={(e) => handleUpload(e, false, lo.campo)}
+                    onRemove={() => handleChange({ target: { value: "" } }, lo.campo, "string")}
                   />
                 </div>
               );

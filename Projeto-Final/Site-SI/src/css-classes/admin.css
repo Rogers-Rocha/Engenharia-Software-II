@@ -220,6 +220,30 @@
   align-self: flex-start;
 }
 
+.admin-file-actions .br-button.danger {
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 4px !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  white-space: nowrap;
+}
+
+.admin-file-actions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 160px;
+}
+
+.admin-file-actions .admin-btn-icon {
+  margin-right: 8px !important;
+  margin-bottom: 0 !important;
+}
+
 .admin-file-label {
   flex: 1;
   display: flex;
